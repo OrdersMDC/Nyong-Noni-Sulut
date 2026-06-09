@@ -1,0 +1,61 @@
+'use client'
+
+import { useState, useEffect } from 'react'
+
+interface CountdownProps {
+  targetDate: string
+  className?: string
+}
+
+function calculateTimeLeft(target: Date) {
+  const diff = target.getTime() - Date.now()
+  if (diff <= 0) return null
+  return {
+    days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+    hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
+    minutes: Math.floor((diff / (1000 * 60)) % 60),
+    seconds: Math.floor((diff / 1000) % 60),
+  }
+}
+
+export function Countdown({ targetDate, className = '' }: CountdownProps) {
+  const target = new Date(targetDate)
+  const [timeLeft, setTimeLeft] = useState<ReturnType<typeof calculateTimeLeft>>(null)
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+    setTimeLeft(calculateTimeLeft(target))
+    const timer = setInterval(() => {
+      setTimeLeft(calculateTimeLeft(target))
+    }, 1000)
+    return () => clearInterval(timer)
+  }, [targetDate])
+
+  if (!mounted) return null
+  if (!timeLeft) return null
+
+  const items = [
+    { value: timeLeft.days, label: 'Hari' },
+    { value: timeLeft.hours, label: 'Jam' },
+    { value: timeLeft.minutes, label: 'Menit' },
+    { value: timeLeft.seconds, label: 'Detik' },
+  ]
+
+  return (
+    <div className={`flex items-center gap-3 sm:gap-4 ${className}`}>
+      {items.map((item) => (
+        <div key={item.label} className="flex flex-col items-center">
+          <div className="flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-xl bg-white/10 backdrop-blur border border-white/20">
+            <span className="font-display text-xl sm:text-2xl font-bold text-white tabular-nums">
+              {String(item.value).padStart(2, '0')}
+            </span>
+          </div>
+          <span className="mt-1 text-[10px] font-medium uppercase tracking-wider text-white/60">
+            {item.label}
+          </span>
+        </div>
+      ))}
+    </div>
+  )
+}

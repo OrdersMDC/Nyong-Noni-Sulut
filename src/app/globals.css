@@ -1,19 +1,38 @@
 @import "tailwindcss";
 
 @theme {
+  /* Brand colors — Sulawesi Utara inspired */
   --color-primary: #0066CC;
   --color-primary-dark: #004C99;
-  --color-primary-light: #3388DD;
+  --color-primary-light: #4A9FE4;
   --color-gold: #D4AF37;
-  --color-gold-light: #E8C94E;
+  --color-gold-light: #E8D57A;
   --color-gold-dark: #B8962E;
+  --color-ocean: #0F2B5B;
+  --color-coral: #E8635A;
+  --color-teal: #1A7A8A;
+  --color-earth: #4A3728;
+  --color-cream: #FDF8F0;
+
+  /* Neutral scale */
   --color-dark: #1A1A1A;
   --color-dark-2: #2A2A2A;
   --color-dark-3: #3A3A3A;
+  --color-gray-50: #F9FAFB;
+  --color-gray-100: #F3F4F6;
+  --color-gray-200: #E5E7EB;
+  --color-gray-300: #D1D5DB;
+  --color-gray-400: #9CA3AF;
+  --color-gray-500: #6B7280;
+  --color-gray-600: #4B5563;
+  --color-gray-700: #374151;
+
+  /* Semantic */
   --color-border: #E5E7EB;
   --color-muted: #6B7280;
   --color-background: #FAFAFA;
 
+  /* Fonts */
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
   --font-display: 'Playfair Display', Georgia, serif;
 }
@@ -31,23 +50,102 @@
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
   }
+
+  ::selection {
+    background-color: #D4AF37;
+    color: #1A1A1A;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-primary;
+  }
 }
 
 @layer components {
-  .glass-card {
-    @apply bg-white/80 backdrop-blur-md border border-white/20 shadow-lg;
+  /* Gradients */
+  .premium-gradient {
+    background: linear-gradient(135deg, #0F2B5B 0%, #0066CC 40%, #004C99 70%, #D4AF37 100%);
   }
 
-  .premium-gradient {
-    background: linear-gradient(135deg, #0066CC 0%, #004C99 50%, #D4AF37 100%);
+  .ocean-gradient {
+    background: linear-gradient(180deg, #0F2B5B 0%, #0066CC 100%);
   }
 
   .gold-gradient {
-    background: linear-gradient(135deg, #D4AF37 0%, #E8C94E 50%, #B8962E 100%);
+    background: linear-gradient(135deg, #D4AF37 0%, #E8D57A 50%, #B8962E 100%);
   }
 
-  .text-gradient {
+  .warm-gradient {
+    background: linear-gradient(180deg, #FDF8F0 0%, #FAFAFA 100%);
+  }
+
+  /* Text gradients */
+  .text-gradient-gold {
     @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(135deg, #D4AF37, #E8C94E);
+    background-image: linear-gradient(135deg, #D4AF37, #E8D57A);
+  }
+
+  .text-gradient-ocean {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #0F2B5B, #0066CC);
+  }
+
+  /* Glass */
+  .glass {
+    @apply bg-white/70 backdrop-blur-md border border-white/20;
+  }
+
+  .glass-dark {
+    @apply bg-ocean/80 backdrop-blur-md border border-white/10;
+  }
+
+  /* Cards */
+  .card-premium {
+    @apply bg-white rounded-2xl border border-gray-200/60 shadow-sm transition-all duration-300;
+  }
+
+  .card-premium:hover {
+    @apply shadow-lg -translate-y-0.5 border-primary/10;
+  }
+
+  .card-glass {
+    @apply bg-white/70 backdrop-blur-md border border-white/20 rounded-2xl shadow-lg;
+  }
+
+  /* Section spacing */
+  .section-padding {
+    @apply py-20 md:py-28;
+  }
+
+  .section-container {
+    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Dividers */
+  .divider-gold {
+    @apply w-16 h-0.5 bg-gold mx-auto;
+  }
+
+  .divider-primary {
+    @apply w-16 h-0.5 bg-primary mx-auto;
+  }
+
+  /* Text */
+  .eyebrow {
+    @apply text-xs font-semibold tracking-[0.2em] uppercase text-gold;
+  }
+
+  .lead {
+    @apply text-lg text-muted leading-relaxed;
+  }
+
+  /* Lines */
+  .line-gold {
+    @apply h-px bg-gradient-to-r from-transparent via-gold/50 to-transparent;
+  }
+
+  /* Skip link */
+  .skip-link {
+    @apply absolute -top-10 left-0 z-[100] bg-primary px-4 py-2 text-sm text-white transition-all focus:top-0;
   }
 }
