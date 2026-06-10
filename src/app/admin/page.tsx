@@ -45,25 +45,23 @@ export default async function AdminDashboard() {
 
   return (
     <div>
-      <h1 className="font-display text-2xl font-bold text-dark mb-6">Dashboard</h1>
+      <h1 className="text-display-md text-ink mb-8">Dashboard</h1>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {adminLinks.map((link) => {
           const Icon = link.icon
           return (
             <Link key={link.href} href={link.href}>
-              <Card className="transition-all hover:shadow-md hover:-translate-y-0.5 cursor-pointer">
-                <CardHeader className="flex flex-row items-center justify-between pb-2">
-                  <CardTitle className="text-sm font-medium text-muted">
+              <div className="rounded-xl border border-hairline bg-surface-2 p-5 transition-all hover:-translate-y-0.5 hover:shadow-md cursor-pointer">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-caption text-ink-muted uppercase tracking-widest">
                     {link.label}
-                  </CardTitle>
-                  <Icon className={`h-4 w-4 ${link.color}`} />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">{link.value}</div>
-                  <p className="text-xs text-muted mt-1">{link.detail}</p>
-                </CardContent>
-              </Card>
+                  </span>
+                  <Icon className={`h-5 w-5 ${link.color}`} />
+                </div>
+                <div className="text-display-md text-ink">{link.value}</div>
+                <p className="text-body-sm text-ink-muted mt-1">{link.detail}</p>
+              </div>
             </Link>
           )
         })}
