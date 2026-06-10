@@ -13,7 +13,10 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  serverComponentsExternalPackages: ['better-sqlite3'],
+  serverExternalPackages: ['better-sqlite3'],
+  outputFileTracingIncludes: {
+    '/*': ['./data/**/*'],
+  },
 }
 
 export default nextConfig

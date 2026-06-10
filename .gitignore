@@ -36,6 +36,7 @@ next-env.d.ts
 # playwright
 test-results/
 playwright-report/
-data/
+data/*.db-wal
+data/*.db-shm
 public/uploads/
 .agents/
