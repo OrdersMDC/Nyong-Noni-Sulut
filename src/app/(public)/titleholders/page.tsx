@@ -163,151 +163,85 @@ export default async function TitleholdersPage({
                 </div>
               )}
 
-              {/* ─── OTHER CATEGORIES ─── */}
+              {/* ─── OTHER CATEGORIES (seragam, center) ─── */}
               {others.length > 0 && (
                 <div>
-                  {/* Wakil I — highlighted separately */}
-                  {others[0]?.category === 'Wakil I' && (
-                    <div className="mb-8">
-                      <div className="relative rounded-[20px] overflow-hidden border border-hairline bg-gradient-to-r from-surface-2 via-surface-2 to-surface-2/80">
-                        <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-accent-blue to-accent-blue/40" />
-                        <div className="grid md:grid-cols-[1fr_auto] items-center gap-6 p-6">
-                          {/* Photos */}
-                          <div className="flex items-center gap-6">
-                            <div className="flex items-center gap-4">
-                              <div className="w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden border-2 border-accent-blue/30 shrink-0">
-                                {others[0].nyong_photo_url ? (
-                                  <img src={others[0].nyong_photo_url} alt={others[0].nyong_name} className="w-full h-full object-cover" />
-                                ) : (
-                                  <div className="w-full h-full flex items-center justify-center text-headline text-ink-muted">
-                                    {renderInitial(others[0].nyong_name)}
-                                  </div>
-                                )}
-                              </div>
-                              <div className="min-w-0">
-                                <span className="text-[10px] font-semibold uppercase tracking-widest text-accent-blue">Nyong</span>
-                                <h4 className="text-body font-semibold text-ink">{others[0].nyong_name}</h4>
-                              </div>
+                  <h3 className="text-headline text-ink mb-8 text-center">Kategori Lainnya</h3>
+                  <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                    {others.map((item: any) => (
+                      <div key={item.id} className="rounded-[20px] border border-hairline bg-surface-2 overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
+                        {/* Category badge — centered */}
+                        <div className="pt-4 pb-2 text-center">
+                          <span className="text-[11px] font-semibold uppercase tracking-wider text-gold-dark bg-gold/10 px-3 py-1 rounded-full">
+                            {item.category}
+                          </span>
+                        </div>
+
+                        {/* Photos + individual info */}
+                        <div className="grid grid-cols-2 gap-px bg-hairline">
+                          {/* Nyong */}
+                          <div className="bg-surface-2 text-center">
+                            <div className="aspect-square overflow-hidden bg-surface-1">
+                              {item.nyong_photo_url ? (
+                                <img src={item.nyong_photo_url} alt={item.nyong_name} className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" />
+                              ) : (
+                                <div className="w-full h-full flex items-center justify-center text-display-md text-ink-muted">
+                                  {renderInitial(item.nyong_name)}
+                                </div>
+                              )}
                             </div>
-                            <div className="hidden sm:flex items-center gap-3 text-ink-muted">
-                              <span className="text-headline text-ink-muted">&amp;</span>
-                            </div>
-                            <div className="flex items-center gap-4">
-                              <div className="min-w-0 text-right">
-                                <span className="text-[10px] font-semibold uppercase tracking-widest text-accent-blue">Noni</span>
-                                <h4 className="text-body font-semibold text-ink">{others[0].noni_name}</h4>
-                              </div>
-                              <div className="w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden border-2 border-accent-blue/30 shrink-0">
-                                {others[0].noni_photo_url ? (
-                                  <img src={others[0].noni_photo_url} alt={others[0].noni_name} className="w-full h-full object-cover" />
-                                ) : (
-                                  <div className="w-full h-full flex items-center justify-center text-headline text-ink-muted">
-                                    {renderInitial(others[0].noni_name)}
-                                  </div>
-                                )}
-                              </div>
+                            <div className="p-3 space-y-1.5">
+                              <span className="block text-[9px] font-semibold uppercase tracking-widest text-ink-muted">Nyong</span>
+                              <h4 className="text-body-sm font-semibold text-ink">{item.nyong_name}</h4>
+                              <p className="flex items-center justify-center gap-1 text-[11px] text-ink-muted">
+                                <MapPin className="h-3 w-3 shrink-0" />
+                                {item.region}
+                              </p>
+                              {item.nyong_instagram && (
+                                <p className="flex items-center justify-center gap-1 text-[11px] text-ink-muted">
+                                  <Instagram className="h-3 w-3 shrink-0" />
+                                  @{item.nyong_instagram}
+                                </p>
+                              )}
                             </div>
                           </div>
 
-                          <div className="flex items-center gap-4 md:text-right">
-                            <span className="text-[13px] font-bold uppercase tracking-widest text-accent-blue whitespace-nowrap">{others[0].category}</span>
-                            <span className="text-hairline hidden md:inline w-px h-4 bg-hairline" />
-                            <span className="flex items-center gap-1 text-caption text-ink-muted whitespace-nowrap">
-                              <MapPin className="h-3.5 w-3.5" />
-                              {others[0].region}
-                            </span>
+                          {/* Noni */}
+                          <div className="bg-surface-2 text-center">
+                            <div className="aspect-square overflow-hidden bg-surface-1">
+                              {item.noni_photo_url ? (
+                                <img src={item.noni_photo_url} alt={item.noni_name} className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" />
+                              ) : (
+                                <div className="w-full h-full flex items-center justify-center text-display-md text-ink-muted">
+                                  {renderInitial(item.noni_name)}
+                                </div>
+                              )}
+                            </div>
+                            <div className="p-3 space-y-1.5">
+                              <span className="block text-[9px] font-semibold uppercase tracking-widest text-ink-muted">Noni</span>
+                              <h4 className="text-body-sm font-semibold text-ink">{item.noni_name}</h4>
+                              <p className="flex items-center justify-center gap-1 text-[11px] text-ink-muted">
+                                <MapPin className="h-3 w-3 shrink-0" />
+                                {item.region}
+                              </p>
+                              {item.noni_instagram && (
+                                <p className="flex items-center justify-center gap-1 text-[11px] text-ink-muted">
+                                  <Instagram className="h-3 w-3 shrink-0" />
+                                  @{item.noni_instagram}
+                                </p>
+                              )}
+                            </div>
                           </div>
                         </div>
-                        {others[0].motto && (
-                          <div className="px-6 pb-4">
-                            <p className="text-sm text-ink-muted italic">&ldquo;{others[0].motto}&rdquo;</p>
+
+                        {item.motto && (
+                          <div className="px-4 pb-4 pt-3 text-center">
+                            <p className="text-xs text-ink-muted italic">&ldquo;{item.motto}&rdquo;</p>
                           </div>
                         )}
                       </div>
-                    </div>
-                  )}
-
-                  {/* Remaining categories — uniform centered grid */}
-                  {others.length > 1 && (
-                    <div>
-                      <h3 className="text-headline text-ink mb-8 text-center">Kategori Lainnya</h3>
-                      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                        {others.slice(1).map((item: any) => (
-                          <div key={item.id} className="rounded-[20px] border border-hairline bg-surface-2 overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
-                            {/* Category badge — centered */}
-                            <div className="pt-4 pb-2 text-center">
-                              <span className="text-[11px] font-semibold uppercase tracking-wider text-gold-dark bg-gold/10 px-3 py-1 rounded-full">
-                                {item.category}
-                              </span>
-                            </div>
-
-                            {/* Photos + individual info */}
-                            <div className="grid grid-cols-2 gap-px bg-hairline">
-                              {/* Nyong */}
-                              <div className="bg-surface-2 text-center">
-                                <div className="aspect-square overflow-hidden bg-surface-1">
-                                  {item.nyong_photo_url ? (
-                                    <img src={item.nyong_photo_url} alt={item.nyong_name} className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" />
-                                  ) : (
-                                    <div className="w-full h-full flex items-center justify-center text-display-md text-ink-muted">
-                                      {renderInitial(item.nyong_name)}
-                                    </div>
-                                  )}
-                                </div>
-                                <div className="p-3 space-y-1.5">
-                                  <span className="block text-[9px] font-semibold uppercase tracking-widest text-ink-muted">Nyong</span>
-                                  <h4 className="text-body-sm font-semibold text-ink">{item.nyong_name}</h4>
-                                  <p className="flex items-center justify-center gap-1 text-[11px] text-ink-muted">
-                                    <MapPin className="h-3 w-3 shrink-0" />
-                                    {item.region}
-                                  </p>
-                                  {item.nyong_instagram && (
-                                    <p className="flex items-center justify-center gap-1 text-[11px] text-ink-muted">
-                                      <Instagram className="h-3 w-3 shrink-0" />
-                                      @{item.nyong_instagram}
-                                    </p>
-                                  )}
-                                </div>
-                              </div>
-
-                              {/* Noni */}
-                              <div className="bg-surface-2 text-center">
-                                <div className="aspect-square overflow-hidden bg-surface-1">
-                                  {item.noni_photo_url ? (
-                                    <img src={item.noni_photo_url} alt={item.noni_name} className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" />
-                                  ) : (
-                                    <div className="w-full h-full flex items-center justify-center text-display-md text-ink-muted">
-                                      {renderInitial(item.noni_name)}
-                                    </div>
-                                  )}
-                                </div>
-                                <div className="p-3 space-y-1.5">
-                                  <span className="block text-[9px] font-semibold uppercase tracking-widest text-ink-muted">Noni</span>
-                                  <h4 className="text-body-sm font-semibold text-ink">{item.noni_name}</h4>
-                                  <p className="flex items-center justify-center gap-1 text-[11px] text-ink-muted">
-                                    <MapPin className="h-3 w-3 shrink-0" />
-                                    {item.region}
-                                  </p>
-                                  {item.noni_instagram && (
-                                    <p className="flex items-center justify-center gap-1 text-[11px] text-ink-muted">
-                                      <Instagram className="h-3 w-3 shrink-0" />
-                                      @{item.noni_instagram}
-                                    </p>
-                                  )}
-                                </div>
-                              </div>
-                            </div>
-
-                            {item.motto && (
-                              <div className="px-4 pb-4 pt-3 text-center">
-                                <p className="text-xs text-ink-muted italic">&ldquo;{item.motto}&rdquo;</p>
-                              </div>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
+                    ))}
+                  </div>
                 </div>
               )}
             </>
