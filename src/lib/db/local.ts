@@ -1,4 +1,4 @@
-import Database from 'better-sqlite3'
+import type Database from 'better-sqlite3'
 import path from 'path'
 import fs from 'fs'
 
@@ -6,12 +6,13 @@ let db: Database.Database | null = null
 
 export function getLocalDb(): Database.Database {
   if (!db) {
+    const BetterSqlite3 = require('better-sqlite3')
     const dbDir = path.join(process.cwd(), 'data')
     if (!fs.existsSync(dbDir)) {
       fs.mkdirSync(dbDir, { recursive: true })
     }
     const dbPath = path.join(dbDir, 'nyong-noni.db')
-    db = new Database(dbPath)
+    db = new BetterSqlite3(dbPath) as Database.Database
     db.pragma('journal_mode = WAL')
     db.pragma('foreign_keys = ON')
     initSchema(db)
