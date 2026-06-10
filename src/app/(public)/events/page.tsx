@@ -24,8 +24,8 @@ interface EventItem {
 export default async function EventsPage() {
   let events: EventItem[] = []
   try {
-    const { getEvents } = await import('@/server/actions/content')
-    events = (await getEvents().catch(() => [])) as EventItem[]
+    const { getPublicEvents } = await import('@/server/actions/content')
+    events = (await getPublicEvents().catch(() => [])) as EventItem[]
   } catch {}
 
   return (

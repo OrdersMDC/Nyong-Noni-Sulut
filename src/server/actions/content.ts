@@ -187,3 +187,59 @@ export async function deleteGalleryItem(id: string) {
   if (error) throw new Error(error.message)
   revalidatePath('/admin/gallery')
 }
+
+export async function getPublicNews() {
+  if (isUsingLocalDb()) {
+    return localQuery<any>('news', {
+      where: { published: 1 },
+      orderBy: { column: 'created_at', direction: 'DESC' },
+    }) || []
+  }
+
+  const supabase = await (await import('@/lib/supabase/server')).createServerSupabaseClient()
+  const { data, error } = await supabase
+    .from('news')
+    .select('*')
+    .eq('published', true)
+    .order('created_at', { ascending: false })
+
+  if (error) throw new Error(error.message)
+  return data || []
+}
+
+export async function getPublicEvents() {
+  if (isUsingLocalDb()) {
+    return localQuery<any>('events', {
+      where: { published: 1 },
+      orderBy: { column: 'date', direction: 'DESC' },
+    }) || []
+  }
+
+  const supabase = await (await import('@/lib/supabase/server')).createServerSupabaseClient()
+  const { data, error } = await supabase
+    .from('events')
+    .select('*')
+    .eq('published', true)
+    .order('date', { ascending: false })
+
+  if (error) throw new Error(error.message)
+  return data || []
+}
+
+export async function getPublicGallery() {
+  if (isUsingLocalDb()) {
+    return localQuery<any>('gallery', {
+      orderBy: { column: 'created_at', direction: 'DESC' },
+    }) || []
+  }
+
+  const supabase = await (await import('@/lib/supabase/server')).createServerSupabaseClient()
+  const { data, error } = await supabase
+    .from('gallery')
+    .select('*')
+    .order('created_at', { ascending: false })
+
+  if (error) throw new Error(error.message)
+  return data || []
+}
+

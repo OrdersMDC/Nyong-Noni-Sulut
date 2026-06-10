@@ -1,14 +1,9 @@
 import { Calendar, ArrowRight } from 'lucide-react'
+import { getPublicNews } from '@/server/actions/content'
 
-const newsItems: Array<{
-  title: string
-  excerpt: string
-  date: string
-  slug: string
-  category?: string
-}> = []
+export default async function NewsPage() {
+  const news = await getPublicNews().catch(() => [])
 
-export default function NewsPage() {
   return (
     <div className="bg-canvas min-h-screen pb-[120px]">
       {/* ─── HERO ─── */}
@@ -28,7 +23,7 @@ export default function NewsPage() {
       {/* ─── NEWS LIST ─── */}
       <section className="py-[96px]">
         <div className="mx-auto max-w-7xl px-[20px]">
-          {newsItems.length === 0 ? (
+          {news.length === 0 ? (
             <div className="py-20 text-center max-w-lg mx-auto">
               <div className="mx-auto mb-8 flex h-16 w-16 items-center justify-center rounded-2xl bg-surface-2 border border-hairline">
                 <Calendar className="h-8 w-8 text-ink-muted" />
@@ -40,27 +35,32 @@ export default function NewsPage() {
             </div>
           ) : (
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {newsItems.map((item) => (
-                <div key={item.slug} className="product-mockup-tile cursor-pointer interactive-hover active-scale flex flex-col p-8">
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="text-caption text-ink-muted">{item.date}</span>
-                    {item.category && (
-                      <span className="rounded-full bg-surface-2 border border-hairline px-3 py-1 text-xs font-semibold text-ink">
-                        {item.category}
-                      </span>
-                    )}
+              {news.map((item: any) => {
+                const dateStr = item.published_at || item.created_at
+                const formattedDate = dateStr
+                  ? new Date(dateStr).toLocaleDateString('id-ID', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                    })
+                  : ''
+                return (
+                  <div key={item.id} className="product-mockup-tile cursor-pointer interactive-hover active-scale flex flex-col p-8">
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="text-caption text-ink-muted">{formattedDate}</span>
+                    </div>
+                    <h3 className="text-headline text-ink mb-3 group-hover:text-accent-blue transition-colors">
+                      {item.title}
+                    </h3>
+                    <p className="text-body-sm text-ink-muted line-clamp-3 leading-relaxed mb-6">
+                      {item.excerpt}
+                    </p>
+                    <div className="mt-auto flex items-center gap-2 text-sm font-medium text-ink group-hover:text-accent-blue transition-all border-t border-hairline pt-4">
+                      Baca selengkapnya <ArrowRight className="h-4 w-4" />
+                    </div>
                   </div>
-                  <h3 className="text-headline text-ink mb-3 group-hover:text-accent-blue transition-colors">
-                    {item.title}
-                  </h3>
-                  <p className="text-body-sm text-ink-muted line-clamp-3 leading-relaxed mb-6">
-                    {item.excerpt}
-                  </p>
-                  <div className="mt-auto flex items-center gap-2 text-sm font-medium text-ink group-hover:text-accent-blue transition-all border-t border-hairline pt-4">
-                    Baca selengkapnya <ArrowRight className="h-4 w-4" />
-                  </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
           )}
         </div>
@@ -68,3 +68,4 @@ export default function NewsPage() {
     </div>
   )
 }
+
