@@ -2,10 +2,12 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Countdown } from '@/components/countdown'
 import { FinalistsCarousel } from '@/components/finalists-carousel'
-import { getPublicFinalists } from '@/server/actions/finalists'
+import { getPublicFinalists, getReigningPair } from '@/server/actions/finalists'
+import { MapPin } from 'lucide-react'
 
 export default async function HomePage() {
   const finalists = await getPublicFinalists()
+  const reigningPair = await getReigningPair().catch(() => null)
 
   return (
     <div className="bg-canvas min-h-screen">
@@ -33,6 +35,70 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ─── REIGNING PAIR ─── */}
+      {reigningPair && (
+        <section className="py-[120px] bg-surface-1 border-y border-hairline relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-b from-gold/5 to-transparent pointer-events-none" />
+          <div className="mx-auto max-w-7xl px-[20px] relative z-10">
+            <div className="text-center mb-14">
+              <p className="text-caption text-ink-muted uppercase tracking-widest mb-3">
+                Nyong &amp; Noni Sulawesi Utara {reigningPair.tahun}
+              </p>
+              <h2 className="text-display-xl text-ink">Pasangan Tahun Ini</h2>
+            </div>
+
+            <div className="grid gap-8 md:grid-cols-2 max-w-5xl mx-auto">
+              {/* Nyong */}
+              <div className="group relative overflow-hidden rounded-[24px] bg-surface-2 border border-hairline">
+                <div className="aspect-[4/5] overflow-hidden">
+                  {reigningPair.nyong_photo_url ? (
+                    <img src={reigningPair.nyong_photo_url} alt={reigningPair.nyong_name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-display-lg text-ink-muted">
+                      {reigningPair.nyong_name?.[0] || 'N'}
+                    </div>
+                  )}
+                </div>
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent p-6 pt-16">
+                  <span className="text-[11px] font-semibold uppercase tracking-widest text-gold">Nyong</span>
+                  <h3 className="text-display-md text-white mt-1">{reigningPair.nyong_name}</h3>
+                </div>
+              </div>
+
+              {/* Noni */}
+              <div className="group relative overflow-hidden rounded-[24px] bg-surface-2 border border-hairline">
+                <div className="aspect-[4/5] overflow-hidden">
+                  {reigningPair.noni_photo_url ? (
+                    <img src={reigningPair.noni_photo_url} alt={reigningPair.noni_name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-display-lg text-ink-muted">
+                      {reigningPair.noni_name?.[0] || 'N'}
+                    </div>
+                  )}
+                </div>
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent p-6 pt-16">
+                  <span className="text-[11px] font-semibold uppercase tracking-widest text-gold">Noni</span>
+                  <h3 className="text-display-md text-white mt-1">{reigningPair.noni_name}</h3>
+                </div>
+              </div>
+            </div>
+
+            <div className="text-center mt-10">
+              <p className="flex items-center justify-center gap-2 text-body text-ink-muted mb-3">
+                <MapPin className="h-4 w-4" />
+                {reigningPair.region}
+              </p>
+              {reigningPair.motto && (
+                <p className="text-body-lg text-ink-muted italic max-w-xl mx-auto mb-8">{reigningPair.motto}</p>
+              )}
+              <Link href="/titleholders">
+                <Button variant="primary" className="h-14 px-8 text-lg">Lihat Seluruh Pasangan</Button>
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* ─── COUNTDOWN ─── */}
       <section className="py-[96px] border-t border-hairline">

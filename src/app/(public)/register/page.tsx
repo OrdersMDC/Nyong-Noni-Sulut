@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@/components/ui/button'
@@ -275,9 +276,9 @@ export default function RegisterPage() {
               <div className="flex justify-between pt-8 border-t border-hairline mt-10">
                 {step === STEPS.length ? (
                   <div className="w-full text-center">
-                    <a href="/" className="text-body-sm font-semibold text-ink-muted transition-colors hover:text-ink">
+                    <Link href="/" className="text-body-sm font-semibold text-ink-muted transition-colors hover:text-ink">
                       Kembali ke Beranda
-                    </a>
+                    </Link>
                   </div>
                 ) : (
                   <>
