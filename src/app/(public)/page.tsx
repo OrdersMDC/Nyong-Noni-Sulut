@@ -3,7 +3,9 @@ import { Button } from '@/components/ui/button'
 import { Section } from '@/components/section'
 import { BentenanPattern, CornerAccent } from '@/components/pattern'
 import { Countdown } from '@/components/countdown'
-import { ArrowRight, Award, Camera, Calendar, Newspaper, Users, MapPin, Quote, Star } from 'lucide-react'
+import { FinalistsCarousel } from '@/components/finalists-carousel'
+import { getPublicFinalists } from '@/server/actions/finalists'
+import { ArrowRight, Award, Camera, Calendar, Newspaper, Users, MapPin, Quote, Star, ChevronRight } from 'lucide-react'
 
 const stats = [
   { value: '12+', label: 'Tahun Penyelenggaraan', icon: Star },
@@ -72,7 +74,9 @@ const testimonials = [
   },
 ]
 
-export default function HomePage() {
+export default async function HomePage() {
+  const finalists = await getPublicFinalists()
+
   return (
     <>
       {/* ─── HERO ─── */}
@@ -131,6 +135,44 @@ export default function HomePage() {
         </div>
 
         <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent" />
+      </section>
+
+      {/* ─── FINALISTS CAROUSEL ─── */}
+      <section className="relative overflow-hidden bg-ocean py-20 md:py-28">
+        <div className="pointer-events-none absolute inset-0">
+          <BentenanPattern className="absolute -top-20 -right-20 h-[400px] w-[400px] text-white/[0.03]" />
+          <BentenanPattern className="absolute -bottom-20 -left-20 h-[300px] w-[300px] text-gold/[0.03] rotate-45" />
+        </div>
+        <div className="section-container relative z-10">
+          <div className="flex items-end justify-between mb-10 md:mb-14">
+            <div>
+              <p className="eyebrow text-gold-light">Finalis 2026</p>
+              <h2 className="font-display text-3xl md:text-4xl font-bold text-white mt-2">
+                Kenali Mereka
+              </h2>
+              <p className="text-white/50 mt-2 max-w-xl">
+                Generasi muda terbaik dari seluruh Sulawesi Utara yang siap menjadi duta wisata dan budaya.
+              </p>
+            </div>
+            <Link
+              href="/finalists"
+              className="hidden sm:inline-flex items-center gap-1.5 text-sm font-medium text-gold-light hover:text-gold transition-colors group"
+            >
+              Lihat Semua
+              <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+            </Link>
+          </div>
+          <FinalistsCarousel items={finalists} />
+          <div className="mt-8 text-center sm:hidden">
+            <Link
+              href="/finalists"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-gold-light hover:text-gold transition-colors"
+            >
+              Lihat Semua Finalis
+              <ChevronRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </div>
       </section>
 
       {/* ─── STATISTICS ─── */}
