@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@/components/ui/button'
 import { Check, ChevronLeft, ChevronRight, Upload } from 'lucide-react'
+import { submitRegistration } from '@/server/actions/applicants'
 import {
   registrationSchema,
   type RegistrationInput,
@@ -20,6 +21,8 @@ const STEPS = [
 export default function RegisterPage() {
   const [step, setStep] = useState(0)
   const [photo, setPhoto] = useState<File | null>(null)
+  const [submitError, setSubmitError] = useState('')
+  const [submitting, setSubmitting] = useState(false)
 
   const form = useForm<RegistrationInput>({
     resolver: zodResolver(registrationSchema),
@@ -41,33 +44,63 @@ export default function RegisterPage() {
 
   const { register, handleSubmit, formState: { errors }, trigger, getValues } = form
 
-  const validateStep = async (): Promise<boolean> => {
-    const fieldsByStep: Record<number, (keyof RegistrationInput)[]> = {
-      0: ['full_name', 'email', 'phone', 'date_of_birth'],
-      1: ['address', 'city', 'province'],
-      2: ['height_cm', 'weight_kg', 'occupation', 'education'],
-      3: [],
-    }
-    const fields = fieldsByStep[step] || []
+  const fieldsByStep: Record<number, (keyof RegistrationInput)[]> = {
+    0: ['full_name', 'email', 'phone', 'date_of_birth'],
+    1: ['address', 'city', 'province'],
+    2: ['height_cm', 'weight_kg', 'occupation', 'education'],
+  }
+
+  const validateStep = async (targetStep: number): Promise<boolean> => {
+    const fields = fieldsByStep[targetStep] || []
     if (fields.length === 0) return true
-    const result = await trigger(fields)
-    return result
+    return trigger(fields)
   }
 
   const nextStep = async () => {
-    const valid = await validateStep()
+    setSubmitError('')
+    const valid = await validateStep(step)
     if (valid) {
       setStep((prev) => Math.min(prev + 1, STEPS.length - 1))
     }
   }
 
   const prevStep = () => {
+    setSubmitError('')
     setStep((prev) => Math.max(prev - 1, 0))
   }
 
   const onSubmit = async (data: RegistrationInput) => {
-    // Will be implemented with server action
-    console.log('Registration data:', { ...data, photo })
+    setSubmitError('')
+
+    for (let currentStep = 0; currentStep < 3; currentStep += 1) {
+      const valid = await validateStep(currentStep)
+      if (!valid) {
+        setStep(currentStep)
+        setSubmitError(`Lengkapi data pada langkah "${STEPS[currentStep].title}" terlebih dahulu`)
+        return
+      }
+    }
+
+    setSubmitting(true)
+
+    try {
+      const formData = new FormData()
+      Object.entries(data).forEach(([key, value]) => {
+        formData.append(key, String(value))
+      })
+
+      const result = await submitRegistration(formData)
+      if (result?.error) {
+        setSubmitError(String(result.error))
+        return
+      }
+
+      setStep(STEPS.length)
+    } catch {
+      setSubmitError('Terjadi kesalahan. Silakan coba lagi.')
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   // Simplified styled input component
@@ -135,10 +168,12 @@ export default function RegisterPage() {
           </div>
 
           <div className="product-mockup-tile p-8 md:p-12">
-            <div className="mb-8 border-b border-hairline pb-6">
-              <h2 className="text-display-md text-ink mb-2">{STEPS[step].title}</h2>
-              <p className="text-body-sm text-ink-muted">{STEPS[step].description}</p>
-            </div>
+            {step < STEPS.length && (
+              <div className="mb-8 border-b border-hairline pb-6">
+                <h2 className="text-display-md text-ink mb-2">{STEPS[step].title}</h2>
+                <p className="text-body-sm text-ink-muted">{STEPS[step].description}</p>
+              </div>
+            )}
             
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
               {/* Step 1: Personal Info */}
@@ -218,27 +253,55 @@ export default function RegisterPage() {
                 </div>
               )}
 
+              {step === STEPS.length && (
+                <div className="space-y-6 animate-fade-in py-10 text-center">
+                  <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border border-green-500/20 bg-green-500/10">
+                    <Check className="h-8 w-8 text-green-600" />
+                  </div>
+                  <div className="space-y-2">
+                    <h3 className="text-display-md text-ink">Pendaftaran Berhasil</h3>
+                    <p className="text-body-sm text-ink-muted max-w-lg mx-auto">
+                      Terima kasih telah mendaftar. Data Anda sudah kami terima dan akan diproses lebih lanjut.
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {submitError && (
+                <p className="text-center text-sm text-red-500">{submitError}</p>
+              )}
+
               {/* Navigation */}
               <div className="flex justify-between pt-8 border-t border-hairline mt-10">
-                <Button
-                  type="button"
-                  variant="secondary"
-                  onClick={prevStep}
-                  disabled={step === 0}
-                  className="px-6"
-                >
-                  <ChevronLeft className="mr-2 h-4 w-4" />
-                  Sebelumnya
-                </Button>
-                {step < STEPS.length - 1 ? (
-                  <Button type="button" variant="primary" onClick={nextStep} className="px-6">
-                    Selanjutnya
-                    <ChevronRight className="ml-2 h-4 w-4" />
-                  </Button>
+                {step === STEPS.length ? (
+                  <div className="w-full text-center">
+                    <a href="/" className="text-body-sm font-semibold text-ink-muted transition-colors hover:text-ink">
+                      Kembali ke Beranda
+                    </a>
+                  </div>
                 ) : (
-                  <Button type="submit" variant="primary" className="px-8">
-                    Kirim Pendaftaran
-                  </Button>
+                  <>
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      onClick={prevStep}
+                      disabled={step === 0}
+                      className="px-6"
+                    >
+                      <ChevronLeft className="mr-2 h-4 w-4" />
+                      Sebelumnya
+                    </Button>
+                    {step < STEPS.length - 1 ? (
+                      <Button type="button" variant="primary" onClick={nextStep} className="px-6">
+                        Selanjutnya
+                        <ChevronRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    ) : (
+                      <Button type="submit" variant="primary" className="px-8" disabled={submitting}>
+                        {submitting ? 'Mengirim...' : 'Kirim Pendaftaran'}
+                      </Button>
+                    )}
+                  </>
                 )}
               </div>
             </form>

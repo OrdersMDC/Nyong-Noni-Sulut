@@ -2,7 +2,7 @@
 
 import { requireAdmin, getAdminClient } from '@/lib/supabase/admin'
 import { createServerSupabaseClient } from '@/lib/supabase/server'
-import { hallOfFameSchema, alumniAchievementSchema, finalistUpdateSchema } from '@/lib/validations/registration'
+import { hallOfFameSchema, alumniAchievementSchema, finalistUpdateSchema, titleholderSchema } from '@/lib/validations/registration'
 import { revalidatePath } from 'next/cache'
 import { isUsingLocalDb, localQuery, localInsert, localUpdate, localDelete } from '@/lib/db/local'
 import { writeFile, mkdir } from 'fs/promises'
@@ -15,6 +15,26 @@ function calculateAge(birthDate: string): number {
   const m = today.getMonth() - birth.getMonth()
   if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--
   return age
+}
+
+const TITLEHOLDER_CATEGORY_ORDER: Record<string, number> = {
+  'Juara Utama': 1,
+  'Wakil I': 2,
+  'Wakil II': 3,
+  'Harapan I': 4,
+  'Harapan II': 5,
+  'Berbakat': 10,
+  'Favorit': 11,
+  'Persahabatan': 12,
+  'Digital': 13,
+  'Other': 99,
+}
+
+function sortTitleholders<T extends { tahun: number; category: string }>(items: T[]): T[] {
+  return [...items].sort((a, b) => {
+    if (a.tahun !== b.tahun) return b.tahun - a.tahun
+    return (TITLEHOLDER_CATEGORY_ORDER[a.category] || 99) - (TITLEHOLDER_CATEGORY_ORDER[b.category] || 99)
+  })
 }
 
 // Public: get all finalists with profile info
@@ -95,6 +115,31 @@ export async function getAlumniAchievements() {
   const supabase = await createServerSupabaseClient()
   const { data } = await supabase.from('alumni_achievements').select('*').order('tahun', { ascending: false }) as any
   return data || []
+}
+
+export async function getTitleholders(tahun?: number) {
+  if (isUsingLocalDb()) {
+    const data = localQuery<any>('titleholders', { orderBy: { column: 'tahun', direction: 'DESC' } }) || []
+    const filtered = tahun ? data.filter((item: any) => item.tahun === tahun) : data
+    return sortTitleholders(filtered)
+  }
+
+  const supabase = await createServerSupabaseClient()
+  let query = supabase.from('titleholders').select('*').order('tahun', { ascending: false }).order('sort_order', { ascending: true })
+  if (tahun) query = query.eq('tahun', tahun)
+  const { data } = await query as any
+  return sortTitleholders(data || [])
+}
+
+export async function getReigningPair() {
+  const currentYear = new Date().getFullYear()
+  const currentYearPairs = await getTitleholders(currentYear)
+  if (currentYearPairs.length > 0) {
+    return currentYearPairs.find((item: any) => item.category === 'Juara Utama') || currentYearPairs[0]
+  }
+
+  const latestPairs = await getTitleholders()
+  return latestPairs.find((item: any) => item.category === 'Juara Utama') || latestPairs[0] || null
 }
 
 // Admin: update finalist data (applicant + profile)
@@ -244,4 +289,85 @@ export async function deleteAlumniAchievement(id: string) {
   const adminClient = getAdminClient()
   await adminClient.from('alumni_achievements').delete().eq('id', id)
   revalidatePath('/admin/alumni-achievements')
+}
+
+export async function createTitleholder(data: Record<string, unknown>) {
+  await requireAdmin()
+  const parsed = titleholderSchema.safeParse({
+    ...data,
+    sort_order: TITLEHOLDER_CATEGORY_ORDER[data.category as string] || 99,
+  })
+
+  if (!parsed.success) {
+    return { error: Object.entries(parsed.error.flatten().fieldErrors).map(([field, errors]) => `${field}: ${(errors as string[]).join(', ')}`).join('; ') }
+  }
+
+  if (isUsingLocalDb()) {
+    const record = localInsert('titleholders', { ...parsed.data, id: crypto.randomUUID() })
+    revalidatePath('/titleholders')
+    revalidatePath('/admin/titleholders')
+    revalidatePath('/')
+    return { data: record }
+  }
+
+  const adminClient = getAdminClient()
+  const { data: result, error } = await adminClient.from('titleholders').insert(parsed.data).select().single()
+  if (error) return { error: error.message }
+  revalidatePath('/titleholders')
+  revalidatePath('/admin/titleholders')
+  revalidatePath('/')
+  return { data: result }
+}
+
+export async function updateTitleholder(id: string, data: Record<string, unknown>) {
+  await requireAdmin()
+  const parsed = titleholderSchema.safeParse({
+    ...data,
+    sort_order: TITLEHOLDER_CATEGORY_ORDER[data.category as string] || 99,
+  })
+
+  if (!parsed.success) {
+    return { error: Object.entries(parsed.error.flatten().fieldErrors).map(([field, errors]) => `${field}: ${(errors as string[]).join(', ')}`).join('; ') }
+  }
+
+  const updatedAt = new Date().toISOString()
+
+  if (isUsingLocalDb()) {
+    localUpdate('titleholders', id, { ...parsed.data, updated_at: updatedAt })
+    revalidatePath('/titleholders')
+    revalidatePath('/admin/titleholders')
+    revalidatePath('/')
+    return { data: parsed.data }
+  }
+
+  const adminClient = getAdminClient()
+  const { data: result, error } = await adminClient
+    .from('titleholders')
+    .update({ ...parsed.data, updated_at: updatedAt })
+    .eq('id', id)
+    .select()
+    .single()
+  if (error) return { error: error.message }
+  revalidatePath('/titleholders')
+  revalidatePath('/admin/titleholders')
+  revalidatePath('/')
+  return { data: result }
+}
+
+export async function deleteTitleholder(id: string) {
+  await requireAdmin()
+
+  if (isUsingLocalDb()) {
+    localDelete('titleholders', id)
+    revalidatePath('/titleholders')
+    revalidatePath('/admin/titleholders')
+    revalidatePath('/')
+    return
+  }
+
+  const adminClient = getAdminClient()
+  await adminClient.from('titleholders').delete().eq('id', id)
+  revalidatePath('/titleholders')
+  revalidatePath('/admin/titleholders')
+  revalidatePath('/')
 }

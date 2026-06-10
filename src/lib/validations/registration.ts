@@ -113,9 +113,27 @@ export const alumniAchievementSchema = z.object({
   instagram: z.string().optional(),
 })
 
+export const titleholderSchema = z.object({
+  tahun: z.coerce.number().min(2000, 'Tahun minimal 2000').max(2100, 'Tahun maksimal 2100'),
+  category: z.enum(['Juara Utama', 'Wakil I', 'Wakil II', 'Harapan I', 'Harapan II', 'Berbakat', 'Favorit', 'Persahabatan', 'Digital', 'Other'], {
+    errorMap: () => ({ message: 'Pilih kategori' }),
+  }),
+  nyong_name: z.string().min(3, 'Nama Nyong minimal 3 karakter'),
+  noni_name: z.string().min(3, 'Nama Noni minimal 3 karakter'),
+  region: z.string().min(3, 'Region harus diisi'),
+  motto: z.string().optional(),
+  biography: z.string().optional(),
+  nyong_photo_url: z.string().optional(),
+  noni_photo_url: z.string().optional(),
+  nyong_instagram: z.string().optional(),
+  noni_instagram: z.string().optional(),
+  sort_order: z.coerce.number().int().default(0),
+})
+
 export type RegistrationInput = z.infer<typeof registrationSchema>
 export type NewsInput = z.infer<typeof newsSchema>
 export type EventInput = z.infer<typeof eventSchema>
 export type GalleryInput = z.infer<typeof gallerySchema>
 export type HallOfFameInput = z.infer<typeof hallOfFameSchema>
 export type AlumniAchievementInput = z.infer<typeof alumniAchievementSchema>
+export type TitleholderInput = z.infer<typeof titleholderSchema>

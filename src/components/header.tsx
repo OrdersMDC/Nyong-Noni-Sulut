@@ -10,6 +10,7 @@ import { cn } from '@/lib/utils'
 const NAV_ITEMS = [
   { label: 'Beranda', href: '/' },
   { label: 'Tentang', href: '/about' },
+  { label: 'Nyong & Noni', href: '/titleholders' },
   { label: 'Finalis', href: '/finalists' },
   { label: 'Hall of Fame', href: '/hall-of-fame' },
   { label: 'Prestasi', href: '/alumni-achievements' },

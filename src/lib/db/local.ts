@@ -122,6 +122,24 @@ function initSchema(db: Database.Database) {
       instagram TEXT,
       created_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
+
+    CREATE TABLE IF NOT EXISTS titleholders (
+      id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(16)))),
+      tahun INTEGER NOT NULL,
+      category TEXT NOT NULL CHECK (category IN ('Juara Utama', 'Wakil I', 'Wakil II', 'Harapan I', 'Harapan II', 'Berbakat', 'Favorit', 'Persahabatan', 'Digital', 'Other')),
+      nyong_name TEXT NOT NULL,
+      noni_name TEXT NOT NULL,
+      region TEXT NOT NULL,
+      motto TEXT,
+      biography TEXT,
+      nyong_photo_url TEXT,
+      noni_photo_url TEXT,
+      nyong_instagram TEXT,
+      noni_instagram TEXT,
+      sort_order INTEGER NOT NULL DEFAULT 0,
+      created_at TEXT NOT NULL DEFAULT (datetime('now')),
+      updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
   `)
 }
 

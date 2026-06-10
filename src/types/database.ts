@@ -192,6 +192,58 @@ export interface Database {
           updated_at?: string
         }
       }
+      titleholders: {
+        Row: {
+          id: string
+          tahun: number
+          category: 'Juara Utama' | 'Wakil I' | 'Wakil II' | 'Harapan I' | 'Harapan II' | 'Berbakat' | 'Favorit' | 'Persahabatan' | 'Digital' | 'Other'
+          nyong_name: string
+          noni_name: string
+          region: string
+          motto: string | null
+          biography: string | null
+          nyong_photo_url: string | null
+          noni_photo_url: string | null
+          nyong_instagram: string | null
+          noni_instagram: string | null
+          sort_order: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          tahun: number
+          category: 'Juara Utama' | 'Wakil I' | 'Wakil II' | 'Harapan I' | 'Harapan II' | 'Berbakat' | 'Favorit' | 'Persahabatan' | 'Digital' | 'Other'
+          nyong_name: string
+          noni_name: string
+          region: string
+          motto?: string | null
+          biography?: string | null
+          nyong_photo_url?: string | null
+          noni_photo_url?: string | null
+          nyong_instagram?: string | null
+          noni_instagram?: string | null
+          sort_order?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          tahun?: number
+          category?: 'Juara Utama' | 'Wakil I' | 'Wakil II' | 'Harapan I' | 'Harapan II' | 'Berbakat' | 'Favorit' | 'Persahabatan' | 'Digital' | 'Other'
+          nyong_name?: string
+          noni_name?: string
+          region?: string
+          motto?: string | null
+          biography?: string | null
+          nyong_photo_url?: string | null
+          noni_photo_url?: string | null
+          nyong_instagram?: string | null
+          noni_instagram?: string | null
+          sort_order?: number
+          updated_at?: string
+        }
+      }
     }
     Views: Record<string, never>
     Functions: Record<string, never>

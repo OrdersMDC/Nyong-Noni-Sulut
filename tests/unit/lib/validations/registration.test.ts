@@ -9,6 +9,7 @@ import {
   finalistUpdateSchema,
   hallOfFameSchema,
   alumniAchievementSchema,
+  titleholderSchema,
 } from '@/lib/validations/registration'
 
 describe('registrationSchema', () => {
@@ -244,6 +245,35 @@ describe('alumniAchievementSchema', () => {
   it('accepts optional photo_url and instagram', () => {
     const result = alumniAchievementSchema.safeParse({ ...validData, photo_url: 'https://example.com/photo.jpg', instagram: '@johndoe' })
     expect(result.success).toBe(true)
+  })
+})
+
+describe('titleholderSchema', () => {
+  const validData = {
+    tahun: 2026,
+    category: 'Juara Utama',
+    nyong_name: 'John Doe',
+    noni_name: 'Jane Doe',
+    region: 'Manado',
+    motto: 'Budaya untuk pariwisata',
+  }
+
+  it('validates correct data', () => {
+    expect(titleholderSchema.safeParse(validData).success).toBe(true)
+  })
+
+  it('rejects invalid category', () => {
+    expect(titleholderSchema.safeParse({ ...validData, category: 'Invalid' }).success).toBe(false)
+  })
+
+  it('rejects missing region', () => {
+    expect(titleholderSchema.safeParse({ ...validData, region: '' }).success).toBe(false)
+  })
+
+  it('applies default sort_order when omitted', () => {
+    const result = titleholderSchema.safeParse(validData)
+    expect(result.success).toBe(true)
+    if (result.success) expect(result.data.sort_order).toBe(0)
   })
 })
 

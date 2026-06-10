@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 
 const mockLocalQuery = vi.fn((table: string, opts?: any) => {
   if (table === 'applicants') {
@@ -16,6 +16,11 @@ const mockLocalQuery = vi.fn((table: string, opts?: any) => {
   ]
   if (table === 'alumni_achievements') return [
     { id: 'a1', alumni_name: 'John Doe', achievement_type: 'Dokter', description: 'Dokter di RSUD', tahun: '2025' },
+  ]
+  if (table === 'titleholders') return [
+    { id: 't1', tahun: 2026, category: 'Juara Utama', nyong_name: 'John', noni_name: 'Jane', region: 'Manado', sort_order: 1, motto: 'Sulut Hebat' },
+    { id: 't2', tahun: 2026, category: 'Wakil I', nyong_name: 'Alex', noni_name: 'Sara', region: 'Bitung', sort_order: 2 },
+    { id: 't3', tahun: 2025, category: 'Juara Utama', nyong_name: 'Bimo', noni_name: 'Clara', region: 'Tomohon', sort_order: 1 },
   ]
   if (table === 'finalist_profiles') {
     if (opts?.where?.applicant_id === '1') return [
@@ -47,6 +52,12 @@ vi.mock('next/cache', () => ({ revalidatePath: vi.fn() }))
 
 beforeEach(() => {
   vi.clearAllMocks()
+  vi.useFakeTimers()
+  vi.setSystemTime(new Date('2026-06-10T00:00:00Z'))
+})
+
+afterEach(() => {
+  vi.useRealTimers()
 })
 
 describe('getPublicFinalists', () => {
@@ -134,6 +145,34 @@ describe('getAlumniAchievements', () => {
   })
 })
 
+describe('getTitleholders', () => {
+  it('returns sorted titleholders', async () => {
+    const { getTitleholders } = await import('@/server/actions/finalists')
+    const result = await getTitleholders()
+    expect(result).toHaveLength(3)
+    expect(result[0].tahun).toBe(2026)
+    expect(result[0].category).toBe('Juara Utama')
+    expect(result[1].category).toBe('Wakil I')
+  })
+
+  it('filters titleholders by year', async () => {
+    const { getTitleholders } = await import('@/server/actions/finalists')
+    const result = await getTitleholders(2025)
+    expect(result).toHaveLength(1)
+    expect(result[0].tahun).toBe(2025)
+  })
+})
+
+describe('getReigningPair', () => {
+  it('returns the current year main pair when available', async () => {
+    const { getReigningPair } = await import('@/server/actions/finalists')
+    const result = await getReigningPair()
+    expect(result).not.toBeNull()
+    expect(result!.tahun).toBe(2026)
+    expect(result!.category).toBe('Juara Utama')
+  })
+})
+
 describe('updateFinalistData', () => {
   it('updates finalist applicant fields and creates profile if missing', async () => {
     const { updateFinalistData } = await import('@/server/actions/finalists')
@@ -200,5 +239,55 @@ describe('deleteAlumniAchievement', () => {
     const { deleteAlumniAchievement } = await import('@/server/actions/finalists')
     await expect(deleteAlumniAchievement('a1')).resolves.not.toThrow()
     expect(mockLocalDelete).toHaveBeenCalledWith('alumni_achievements', 'a1')
+  })
+})
+
+describe('createTitleholder', () => {
+  it('creates titleholder with valid data', async () => {
+    const { createTitleholder } = await import('@/server/actions/finalists')
+    const result = await createTitleholder({
+      tahun: 2026,
+      category: 'Juara Utama',
+      nyong_name: 'New Nyong',
+      noni_name: 'New Noni',
+      region: 'Manado',
+    })
+    expect(result.error).toBeUndefined()
+    expect(mockLocalInsert).toHaveBeenCalledWith('titleholders', expect.objectContaining({
+      category: 'Juara Utama',
+      sort_order: 1,
+    }))
+  })
+
+  it('rejects invalid titleholder data', async () => {
+    const { createTitleholder } = await import('@/server/actions/finalists')
+    const result = await createTitleholder({ tahun: 1999, category: 'Invalid' } as any)
+    expect(result.error).toBeDefined()
+  })
+})
+
+describe('updateTitleholder', () => {
+  it('updates an existing titleholder', async () => {
+    const { updateTitleholder } = await import('@/server/actions/finalists')
+    const result = await updateTitleholder('t1', {
+      tahun: 2026,
+      category: 'Wakil I',
+      nyong_name: 'John Updated',
+      noni_name: 'Jane Updated',
+      region: 'Manado',
+    })
+    expect(result.error).toBeUndefined()
+    expect(mockLocalUpdate).toHaveBeenCalledWith('titleholders', 't1', expect.objectContaining({
+      category: 'Wakil I',
+      sort_order: 2,
+    }))
+  })
+})
+
+describe('deleteTitleholder', () => {
+  it('deletes a titleholder', async () => {
+    const { deleteTitleholder } = await import('@/server/actions/finalists')
+    await expect(deleteTitleholder('t1')).resolves.not.toThrow()
+    expect(mockLocalDelete).toHaveBeenCalledWith('titleholders', 't1')
   })
 })
