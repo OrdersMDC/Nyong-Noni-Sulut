@@ -49,7 +49,7 @@ export default function AdminLayout({
   }
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen bg-canvas">
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div
@@ -61,16 +61,16 @@ export default function AdminLayout({
       {/* Sidebar */}
       <aside
         className={cn(
-          'fixed inset-y-0 left-0 z-50 w-64 transform border-r border-border bg-white transition-transform duration-200 lg:relative lg:translate-x-0',
+          'fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-hairline bg-surface-2 transition-transform duration-200 lg:static lg:translate-x-0',
           sidebarOpen ? 'translate-x-0' : '-translate-x-full',
         )}
       >
-        <div className="flex h-16 items-center justify-between border-b border-border px-6">
-          <Link href="/admin" className="font-display text-lg font-bold text-primary">
+        <div className="flex h-16 shrink-0 items-center justify-between border-b border-hairline px-6">
+          <Link href="/admin" className="text-headline text-ink">
             Admin Panel
           </Link>
           <button
-            className="lg:hidden"
+            className="lg:hidden text-ink-muted hover:text-ink"
             onClick={() => setSidebarOpen(false)}
             aria-label="Close sidebar"
           >
@@ -78,7 +78,7 @@ export default function AdminLayout({
           </button>
         </div>
 
-        <nav className="flex flex-col gap-1 p-4">
+        <nav className="flex-1 overflow-y-auto p-3 space-y-0.5">
           {SIDEBAR_ITEMS.map((item) => {
             const Icon = item.icon
             const isActive = pathname === item.href
@@ -87,24 +87,24 @@ export default function AdminLayout({
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  'flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
+                  'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors',
                   isActive
-                    ? 'bg-primary/10 text-primary'
-                    : 'text-muted hover:bg-gray-100 hover:text-dark',
+                    ? 'bg-accent-blue/10 text-accent-blue'
+                    : 'text-ink-muted hover:bg-surface-1 hover:text-ink',
                 )}
                 onClick={() => setSidebarOpen(false)}
               >
-                <Icon className="h-4 w-4" />
+                <Icon className="h-4 w-4 shrink-0" />
                 {item.label}
               </Link>
             )
           })}
         </nav>
 
-        <div className="absolute bottom-4 left-4 right-4">
+        <div className="shrink-0 border-t border-hairline p-3 space-y-1">
           <Button
             variant="ghost"
-            className="w-full justify-start text-muted"
+            className="w-full justify-start text-ink-muted hover:text-ink"
             onClick={handleLogout}
           >
             <LogOut className="mr-2 h-4 w-4" />
@@ -112,7 +112,7 @@ export default function AdminLayout({
           </Button>
           <Link
             href="/"
-            className="mt-2 block rounded-lg px-3 py-2 text-xs text-muted hover:bg-gray-100"
+            className="flex items-center gap-2 rounded-lg px-3 py-2 text-xs text-ink-muted hover:bg-surface-1 hover:text-ink transition-colors"
           >
             &larr; Kembali ke Website
           </Link>
@@ -120,19 +120,19 @@ export default function AdminLayout({
       </aside>
 
       {/* Main content */}
-      <div className="flex flex-1 flex-col">
-        <header className="flex h-16 items-center justify-between border-b border-border bg-white px-6">
+      <div className="flex min-w-0 flex-1 flex-col">
+        <header className="flex h-16 shrink-0 items-center justify-between border-b border-hairline bg-surface-2 px-6">
           <button
-            className="lg:hidden"
+            className="lg:hidden text-ink-muted hover:text-ink"
             onClick={() => setSidebarOpen(true)}
             aria-label="Open sidebar"
           >
             <Menu className="h-5 w-5" />
           </button>
-          <div className="text-sm text-muted">Nyong Noni Sulut Admin</div>
+          <div className="text-body-sm text-ink-muted">Nyong Noni Sulut Admin</div>
         </header>
 
-        <main className="flex-1 p-6">{children}</main>
+        <main className="flex-1 p-6 lg:p-8">{children}</main>
       </div>
     </div>
   )

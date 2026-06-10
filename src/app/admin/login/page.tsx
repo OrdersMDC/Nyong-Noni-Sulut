@@ -59,54 +59,52 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-          <CardTitle className="font-display text-2xl">Admin Login</CardTitle>
-          <CardDescription>
+    <div className="flex min-h-screen items-center justify-center bg-canvas px-4">
+      <div className="w-full max-w-md rounded-2xl border border-hairline bg-surface-2 p-8">
+        <div className="text-center mb-6">
+          <h1 className="text-display-md text-ink">Admin Login</h1>
+          <p className="text-body-sm text-ink-muted mt-2">
             {isLocal
               ? 'Mode lokal - klik masuk untuk melanjutkan'
               : 'Masuk ke panel admin Nyong Noni Sulut'}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleLogin} className="space-y-4">
-            <div>
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="admin@example.com"
-                required={!isLocal}
-              />
-            </div>
-            <div>
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                required={!isLocal}
-              />
-            </div>
-            {error && (
-              <p className="text-sm text-red-600">{error}</p>
-            )}
-            <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? 'Memproses...' : 'Masuk'}
-            </Button>
-            {isLocal && (
-              <p className="text-xs text-center text-muted mt-2">
-                Mode pengembangan lokal - autentikasi dilewati
-              </p>
-            )}
-          </form>
-        </CardContent>
-      </Card>
+          </p>
+        </div>
+        <form onSubmit={handleLogin} className="space-y-4">
+          <div>
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="admin@example.com"
+              required={!isLocal}
+            />
+          </div>
+          <div>
+            <Label htmlFor="password">Password</Label>
+            <Input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••"
+              required={!isLocal}
+            />
+          </div>
+          {error && (
+            <p className="text-sm text-red-600">{error}</p>
+          )}
+          <Button type="submit" className="w-full" disabled={loading}>
+            {loading ? 'Memproses...' : 'Masuk'}
+          </Button>
+          {isLocal && (
+            <p className="text-xs text-center text-ink-muted mt-2">
+              Mode pengembangan lokal - autentikasi dilewati
+            </p>
+          )}
+        </form>
+      </div>
     </div>
   )
 }
