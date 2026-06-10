@@ -109,19 +109,18 @@ export function FinalistsCarousel({ items, speed = 0.4 }: Props) {
           <Link
             key={`${item.id}-${idx}`}
             href={`/finalists/${item.id}`}
-            className="group relative flex-shrink-0 w-[220px] sm:w-[260px] md:w-[280px] h-[340px] sm:h-[380px] md:h-[420px] rounded-2xl overflow-hidden shadow-lg transition-transform duration-500 hover:scale-[1.04]"
-            style={{ transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)' }}
+            className="group relative flex-shrink-0 w-[220px] sm:w-[260px] md:w-[280px] h-[340px] sm:h-[380px] md:h-[420px] rounded-2xl overflow-hidden shadow-lg interactive-hover active-scale"
             aria-label={`${item.full_name} dari ${item.city}`}
           >
             {/* Photo */}
             {item.photo_url ? (
-              <Image
-                src={item.photo_url}
-                alt={item.full_name}
-                fill
-                className="object-cover transition-transform duration-700 group-hover:scale-110"
-                sizes="(max-width: 640px) 220px, (max-width: 768px) 260px, 280px"
-              />
+                <Image
+                  src={item.photo_url}
+                  alt={item.full_name}
+                  fill
+                  className="object-cover transition-transform duration-[600ms] ease-[var(--ease-out)] group-hover:scale-110"
+                  sizes="(max-width: 640px) 220px, (max-width: 768px) 260px, 280px"
+                />
             ) : (
               <div className="absolute inset-0 bg-gradient-to-br from-ocean to-primary flex items-center justify-center">
                 <span className="font-display text-6xl text-white/30">{item.full_name.charAt(0)}</span>
@@ -136,7 +135,7 @@ export function FinalistsCarousel({ items, speed = 0.4 }: Props) {
 
             {/* Content */}
             <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6">
-              <div className="transform transition-transform duration-300 group-hover:-translate-y-1">
+              <div className="transform transition-transform duration-300 ease-[var(--ease-out)] group-hover:-translate-y-1">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gold-light mb-1.5">
                   Finalis 2026
                 </p>

@@ -1,69 +1,78 @@
 import { getPublicFinalists } from '@/server/actions/finalists'
 import Link from 'next/link'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
 import { Instagram, MapPin, GraduationCap, Cake, ExternalLink } from 'lucide-react'
 
 export default async function FinalistsPage() {
   const finalists = await getPublicFinalists().catch(() => [])
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-      <div className="mb-12 text-center">
-        <h1 className="font-display text-4xl font-bold text-dark">Para Finalis</h1>
-        <p className="mt-2 text-muted">
-          Mengenal lebih dekat para finalis Nyong Noni Sulawesi Utara {new Date().getFullYear()}
-        </p>
-      </div>
-
-      {finalists.length === 0 ? (
-        <div className="py-20 text-center">
-          <p className="text-lg text-muted">
-            Belum ada finalis yang diumumkan. Pantau terus informasi terbaru dari kami.
+    <div className="bg-canvas min-h-screen pb-[120px]">
+      <section className="relative flex flex-col items-center justify-center pt-[180px] pb-[96px] px-[20px] text-center border-b border-hairline">
+        <div className="max-w-4xl mx-auto">
+          <p className="text-caption text-ink-muted uppercase tracking-widest mb-4">Finalis</p>
+          <h1 className="text-display-xl text-ink tracking-tighter mb-8 animate-fade-in">
+            Para <br />
+            <span className="text-accent-magenta">Kandidat</span>
+          </h1>
+          <p className="text-subhead text-ink-muted max-w-2xl mx-auto">
+            Mengenal lebih dekat para finalis Nyong Noni Sulawesi Utara {new Date().getFullYear()}
           </p>
         </div>
-      ) : (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {finalists.map((f: any) => (
-            <Link key={f.id} href={`/finalists/${f.id}`} className="group">
-              <Card className="overflow-hidden transition-all hover:shadow-lg hover:-translate-y-1">
-                <div className="aspect-[3/4] overflow-hidden bg-gradient-to-br from-primary/10 to-gold/10 flex items-center justify-center relative">
-                  {f.photo_url ? (
-                    <img src={f.photo_url} alt={f.full_name} className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                  ) : (
-                    <span className="text-6xl font-display text-primary/30 font-bold">{f.full_name?.charAt(0)}</span>
-                  )}
-                  <Badge className="absolute top-3 right-3" variant="gold">Finalis</Badge>
-                </div>
-                <CardContent className="p-4 space-y-2">
-                  <h3 className="font-display text-lg font-semibold group-hover:text-primary transition-colors">{f.full_name}</h3>
-                  <div className="flex items-center gap-1.5 text-sm text-muted">
-                    <MapPin className="h-3.5 w-3.5" />
-                    <span>{f.city}, {f.province}</span>
-                  </div>
-                  <div className="flex items-center gap-1.5 text-sm text-muted">
-                    <Cake className="h-3.5 w-3.5" />
-                    <span>{f.umur} tahun</span>
-                  </div>
-                  <div className="flex items-center gap-1.5 text-sm text-muted">
-                    <GraduationCap className="h-3.5 w-3.5" />
-                    <span>{f.education}</span>
-                  </div>
-                  {f.instagram && (
-                    <div className="flex items-center gap-1.5 text-sm text-muted">
-                      <Instagram className="h-3.5 w-3.5" />
-                      <span>{f.instagram}</span>
+      </section>
+
+      <section className="py-[96px] bg-surface-1">
+        <div className="mx-auto max-w-7xl px-[20px]">
+          {finalists.length === 0 ? (
+            <div className="py-20 text-center">
+              <p className="text-body-lg text-ink-muted">
+                Belum ada finalis yang diumumkan. Pantau terus informasi terbaru dari kami.
+              </p>
+            </div>
+          ) : (
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {finalists.map((f: any) => (
+                <Link key={f.id} href={`/finalists/${f.id}`} className="group active-scale block">
+                  <div className="product-mockup-tile overflow-hidden p-0 h-full flex flex-col interactive-hover">
+                    <div className="aspect-[3/4] overflow-hidden bg-surface-2 flex items-center justify-center relative">
+                      {f.photo_url ? (
+                        <img src={f.photo_url} alt={f.full_name} className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700 ease-[var(--ease-out)]" />
+                      ) : (
+                        <span className="text-display-md text-ink-muted font-bold">{f.full_name?.charAt(0)}</span>
+                      )}
+                      <span className="absolute top-4 right-4 bg-ink text-surface-1 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">
+                        Finalis
+                      </span>
                     </div>
-                  )}
-                  <div className="pt-2 flex items-center gap-1 text-xs text-primary font-medium">
-                    Lihat Profil <ExternalLink className="h-3 w-3" />
+                    <div className="p-6 flex flex-col flex-grow">
+                      <h3 className="text-headline text-ink mb-4">{f.full_name}</h3>
+                      <div className="space-y-3 mt-auto">
+                        <div className="flex items-center gap-2 text-body-sm text-ink-muted">
+                          <MapPin className="h-4 w-4 shrink-0" />
+                          <span className="truncate">{f.city}, {f.province}</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-body-sm text-ink-muted">
+                          <Cake className="h-4 w-4 shrink-0" />
+                          <span>{f.umur} tahun</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-body-sm text-ink-muted">
+                          <GraduationCap className="h-4 w-4 shrink-0" />
+                          <span className="truncate">{f.education}</span>
+                        </div>
+                        {f.instagram && (
+                          <div className="flex items-center gap-2 text-body-sm text-ink-muted">
+                            <Instagram className="h-4 w-4 shrink-0" />
+                            <span className="truncate">{f.instagram}</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                </CardContent>
-              </Card>
-            </Link>
-          ))}
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
-      )}
+      </section>
     </div>
   )
 }

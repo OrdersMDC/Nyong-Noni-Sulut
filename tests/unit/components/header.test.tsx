@@ -44,11 +44,10 @@ describe('Header', () => {
     expect(berandaLink.closest('a')).not.toHaveAttribute('aria-current')
   })
 
-  it('renders logo with NN mark', () => {
+  it('renders brand logo text', () => {
     render(<Header />)
-    expect(screen.getAllByText('NN').length).toBeGreaterThan(0)
-    expect(screen.getByText('Nyong Noni')).toBeInTheDocument()
-    expect(screen.getByText('Sulawesi Utara')).toBeInTheDocument()
+    const logos = screen.getAllByText('Nyong Noni Sulut')
+    expect(logos.length).toBeGreaterThan(0)
   })
 
   it('renders register button', () => {

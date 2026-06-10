@@ -1,10 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Section } from '@/components/section'
 import { GalleryLightbox } from '@/components/gallery-lightbox'
-import { BentenanPattern } from '@/components/pattern'
-import { CornerAccent } from '@/components/pattern'
 import { ImageIcon } from 'lucide-react'
 
 const albums = [
@@ -33,69 +30,69 @@ export default function GalleryPage() {
   }
 
   return (
-    <>
+    <div className="bg-canvas min-h-screen pb-[120px]">
       {/* ─── HERO ─── */}
-      <section className="relative py-28 md:py-36 overflow-hidden bg-gradient-to-br from-ocean via-ocean/95 to-primary text-white">
-        <BentenanPattern className="absolute inset-0 opacity-[0.03]" />
-        <div className="section-container relative z-10 text-center">
-          <p className="eyebrow text-gold-light">Galeri</p>
-          <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mt-4">
-            Dokumentasi Visual
+      <section className="relative flex flex-col items-center justify-center pt-[180px] pb-[96px] px-[20px] text-center border-b border-hairline">
+        <div className="max-w-4xl mx-auto">
+          <p className="text-caption text-ink-muted uppercase tracking-widest mb-4">Galeri</p>
+          <h1 className="text-display-xl text-ink tracking-tighter mb-8 animate-fade-in">
+            Dokumentasi <br />
+            <span className="text-accent-coral">Visual</span>
           </h1>
-          <p className="mt-4 text-lg text-white/70 max-w-2xl mx-auto">
+          <p className="text-subhead text-ink-muted max-w-2xl mx-auto">
             Momen-momen terbaik dari perjalanan Nyong Noni Sulawesi Utara
           </p>
         </div>
       </section>
 
       {/* ─── ALBUMS GRID ─── */}
-      <Section>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {albums.map((album) => (
-            <button
-              key={album.title}
-              onClick={() => openLightbox(0)}
-              className="group relative rounded-2xl overflow-hidden border border-gray-100 bg-white text-left transition-all hover:shadow-lg"
-            >
-              <div className={`aspect-[4/3] bg-gradient-to-br ${album.color} flex items-center justify-center relative`}>
-                <ImageIcon className="h-10 w-10 text-muted/30 group-hover:scale-110 transition-transform" />
-                <CornerAccent className="absolute top-3 right-3 text-white/20" />
-              </div>
-              <div className="p-4">
-                <h3 className="font-display font-semibold text-dark group-hover:text-primary transition-colors">{album.title}</h3>
-                <p className="text-sm text-muted">{album.count} foto</p>
-              </div>
-            </button>
-          ))}
+      <section className="py-[96px]">
+        <div className="mx-auto max-w-7xl px-[20px]">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {albums.map((album) => (
+              <button
+                key={album.title}
+                onClick={() => openLightbox(0)}
+                className="product-mockup-tile text-left p-0 overflow-hidden interactive-hover active-scale group"
+              >
+                <div className={`aspect-[4/3] bg-surface-2 flex items-center justify-center relative`}>
+                  <ImageIcon className="h-10 w-10 text-ink-muted opacity-50 group-hover:scale-110 transition-transform" />
+                </div>
+                <div className="p-6">
+                  <h3 className="text-headline text-ink mb-1">{album.title}</h3>
+                  <p className="text-body-sm text-ink-muted">{album.count} foto</p>
+                </div>
+              </button>
+            ))}
+          </div>
         </div>
-      </Section>
+      </section>
 
       {/* ─── RECENT PHOTOS ─── */}
-      <Section variant="cream" pattern>
-        <div className="text-center mb-12">
-          <p className="eyebrow">Sorotan</p>
-          <h2 className="font-display text-3xl md:text-4xl font-bold text-ocean mt-3">
-            Foto Terbaru
-          </h2>
+      <section className="py-[96px] bg-surface-1 border-t border-hairline">
+        <div className="mx-auto max-w-7xl px-[20px]">
+          <div className="text-center mb-16">
+            <h2 className="text-display-lg text-ink">Foto Terbaru</h2>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {sampleImages.map((img, i) => (
+              <button
+                key={img.id}
+                onClick={() => openLightbox(i)}
+                className="group relative aspect-[4/3] rounded-[16px] overflow-hidden bg-surface-2 interactive-hover active-scale border border-hairline"
+              >
+                <div className="absolute inset-0 bg-gradient-to-t from-surface-1/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all text-left">
+                  <p className="text-headline text-ink">{img.title}</p>
+                </div>
+                <div className="flex h-full items-center justify-center">
+                  <ImageIcon className="h-8 w-8 text-ink-muted opacity-30 group-hover:scale-110 transition-transform" />
+                </div>
+              </button>
+            ))}
+          </div>
         </div>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {sampleImages.map((img, i) => (
-            <button
-              key={img.id}
-              onClick={() => openLightbox(i)}
-              className="group relative aspect-[4/3] rounded-2xl overflow-hidden border border-gray-100 bg-gradient-to-br from-gray-100 to-gray-200 transition-all hover:shadow-lg"
-            >
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-              <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-2 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all">
-                <p className="text-white font-medium text-sm">{img.title}</p>
-              </div>
-              <div className="flex h-full items-center justify-center">
-                <ImageIcon className="h-8 w-8 text-muted/40" />
-              </div>
-            </button>
-          ))}
-        </div>
-      </Section>
+      </section>
 
       {lightboxOpen && (
         <GalleryLightbox
@@ -104,6 +101,6 @@ export default function GalleryPage() {
           onClose={() => setLightboxOpen(false)}
         />
       )}
-    </>
+    </div>
   )
 }

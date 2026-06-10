@@ -1,6 +1,4 @@
 import { getHallOfFame } from '@/server/actions/finalists'
-import { Card, CardContent } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
 import { Crown } from 'lucide-react'
 import { HallOfFameFilter } from './filter'
 
@@ -22,54 +20,77 @@ export default async function HallOfFamePage({
   })
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-      <div className="mb-12 text-center">
-        <div className="flex items-center justify-center gap-2 mb-4">
-          <Crown className="h-8 w-8 text-gold" />
-          <h1 className="font-display text-4xl font-bold text-dark">Hall of Fame</h1>
-          <Crown className="h-8 w-8 text-gold" />
+    <div className="bg-canvas min-h-screen pb-[120px]">
+      <section className="relative flex flex-col items-center justify-center pt-[180px] pb-[96px] px-[20px] text-center border-b border-hairline">
+        <div className="max-w-4xl mx-auto">
+          <p className="text-caption text-ink-muted uppercase tracking-widest mb-4">Pemenang</p>
+          <div className="flex items-center justify-center gap-4 mb-8 animate-fade-in">
+            <Crown className="h-10 w-10 text-accent-violet" />
+            <h1 className="text-display-xl text-ink tracking-tighter">
+              Hall of Fame
+            </h1>
+            <Crown className="h-10 w-10 text-accent-violet" />
+          </div>
+          <p className="text-subhead text-ink-muted max-w-2xl mx-auto">
+            Para pemenang Nyong Noni Sulawesi Utara dari tahun ke tahun
+          </p>
         </div>
-        <p className="text-muted">Para pemenang Nyong Noni Sulawesi Utara dari tahun ke tahun</p>
-      </div>
+      </section>
 
-      <HallOfFameFilter tahun={params.tahun} kota={params.kota} years={years} cities={cities} />
+      <section className="py-[96px]">
+        <div className="mx-auto max-w-7xl px-[20px]">
+          <div className="mb-12">
+            <HallOfFameFilter tahun={params.tahun} kota={params.kota} years={years} cities={cities} />
+          </div>
 
-      {filtered.length === 0 ? (
-        <div className="py-20 text-center text-muted">Belum ada data Hall of Fame</div>
-      ) : (
-        <div className="overflow-x-auto">
-          <table className="w-full text-left">
-            <thead>
-              <tr className="border-b-2 border-gold/30 bg-gold/5">
-                <th className="p-4 font-display text-sm font-semibold">Tahun</th>
-                <th className="p-4 font-display text-sm font-semibold text-primary">Nyong</th>
-                <th className="p-4 font-display text-sm font-semibold text-gold-dark">Noni</th>
-                <th className="p-4 font-display text-sm font-semibold">Kabupaten/Kota</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((entry: any, i: number) => (
-                <tr key={entry.id} className={`border-b border-border/50 ${i % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'}`}>
-                  <td className="p-4 font-bold text-lg">{entry.tahun}</td>
-                  <td className="p-4">
-                    <div className="flex items-center gap-3">
-                      {entry.nyong_photo_url ? <img src={entry.nyong_photo_url} alt="" className="h-10 w-10 rounded-full object-cover" /> : <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">N</div>}
-                      <span className="font-medium">{entry.nyong_name}</span>
-                    </div>
-                  </td>
-                  <td className="p-4">
-                    <div className="flex items-center gap-3">
-                      {entry.noni_photo_url ? <img src={entry.noni_photo_url} alt="" className="h-10 w-10 rounded-full object-cover" /> : <div className="h-10 w-10 rounded-full bg-gold/10 flex items-center justify-center text-gold-dark font-bold">N</div>}
-                      <span className="font-medium">{entry.noni_name}</span>
-                    </div>
-                  </td>
-                  <td className="p-4 text-muted">{entry.kabupaten_kota}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          {filtered.length === 0 ? (
+            <div className="py-20 text-center">
+              <p className="text-body-lg text-ink-muted">Belum ada data Hall of Fame</p>
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="border-b-2 border-ink">
+                    <th className="p-5 text-caption uppercase tracking-wider text-ink-muted">Tahun</th>
+                    <th className="p-5 text-caption uppercase tracking-wider text-accent-blue">Nyong</th>
+                    <th className="p-5 text-caption uppercase tracking-wider text-accent-magenta">Noni</th>
+                    <th className="p-5 text-caption uppercase tracking-wider text-ink-muted">Kabupaten/Kota</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filtered.map((entry: any) => (
+                    <tr key={entry.id} className="border-b border-hairline hover:bg-surface-1 transition-colors">
+                      <td className="p-5 text-headline text-ink">{entry.tahun}</td>
+                      <td className="p-5">
+                        <div className="flex items-center gap-4">
+                          {entry.nyong_photo_url ? (
+                            <img src={entry.nyong_photo_url} alt="" className="h-12 w-12 rounded-full object-cover border border-hairline" />
+                          ) : (
+                            <div className="h-12 w-12 rounded-full bg-surface-2 border border-hairline flex items-center justify-center text-ink font-semibold">N</div>
+                          )}
+                          <span className="text-body text-ink font-medium">{entry.nyong_name}</span>
+                        </div>
+                      </td>
+                      <td className="p-5">
+                        <div className="flex items-center gap-4">
+                          {entry.noni_photo_url ? (
+                            <img src={entry.noni_photo_url} alt="" className="h-12 w-12 rounded-full object-cover border border-hairline" />
+                          ) : (
+                            <div className="h-12 w-12 rounded-full bg-surface-2 border border-hairline flex items-center justify-center text-ink font-semibold">N</div>
+                          )}
+                          <span className="text-body text-ink font-medium">{entry.noni_name}</span>
+                        </div>
+                      </td>
+                      <td className="p-5 text-body-sm text-ink-muted">{entry.kabupaten_kota}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
-      )}
+      </section>
     </div>
   )
 }

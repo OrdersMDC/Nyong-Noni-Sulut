@@ -5,8 +5,11 @@ import { Footer } from '@/components/footer'
 describe('Footer', () => {
   it('renders brand section', () => {
     render(<Footer />)
-    expect(screen.getByText('Nyong Noni')).toBeInTheDocument()
-    expect(screen.getByText('Sulawesi Utara')).toBeInTheDocument()
+    const brandTitles = screen.getAllByText('Nyong Noni Sulut')
+    expect(brandTitles.length).toBeGreaterThan(0)
+    expect(
+      screen.getByText(/Platform resmi pembinaan, pemilihan, dan kolaborasi/i)
+    ).toBeInTheDocument()
   })
 
   it('renders navigation links', () => {
@@ -19,16 +22,15 @@ describe('Footer', () => {
 
   it('renders media links', () => {
     render(<Footer />)
-    expect(screen.getByText('Galeri')).toBeInTheDocument()
-    expect(screen.getByText('Berita')).toBeInTheDocument()
-    expect(screen.getByText('Acara')).toBeInTheDocument()
+    expect(screen.getByText('Galeri Kegiatan')).toBeInTheDocument()
+    expect(screen.getByText('Berita & Rilis')).toBeInTheDocument()
+    expect(screen.getByText('Agenda Acara')).toBeInTheDocument()
   })
 
   it('renders contact information', () => {
     render(<Footer />)
-    expect(screen.getByText('Manado, Sulawesi Utara')).toBeInTheDocument()
+    expect(screen.getByText('Manado, Sulawesi Utara, Indonesia')).toBeInTheDocument()
     expect(screen.getByText('info@nyongnonisulut.id')).toBeInTheDocument()
-    expect(screen.getByText('@nyongnonisulut')).toBeInTheDocument()
   })
 
   it('renders social media links', () => {
@@ -42,13 +44,6 @@ describe('Footer', () => {
     expect(emailLink).toHaveAttribute('href', 'mailto:info@nyongnonisulut.id')
   })
 
-  it('renders newsletter section', () => {
-    render(<Footer />)
-    expect(screen.getByText('Ikuti Perkembangan Terbaru')).toBeInTheDocument()
-    expect(screen.getByLabelText('Email untuk newsletter')).toBeInTheDocument()
-    expect(screen.getByText('Berlangganan')).toBeInTheDocument()
-  })
-
   it('renders copyright notice with current year', () => {
     render(<Footer />)
     const year = new Date().getFullYear()
@@ -57,7 +52,7 @@ describe('Footer', () => {
 
   it('renders bottom links', () => {
     render(<Footer />)
-    expect(screen.getByText('Pendaftaran')).toBeInTheDocument()
-    expect(screen.getByText('Tentang')).toBeInTheDocument()
+    expect(screen.getAllByText('Pendaftaran').length).toBeGreaterThan(0)
+    expect(screen.getAllByText('Tentang').length).toBeGreaterThan(0)
   })
 })

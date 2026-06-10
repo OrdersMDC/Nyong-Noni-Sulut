@@ -1,6 +1,3 @@
-import { Section } from '@/components/section'
-import { BentenanPattern } from '@/components/pattern'
-import { Card, CardContent } from '@/components/ui/card'
 import { Calendar, ArrowRight } from 'lucide-react'
 
 const newsItems: Array<{
@@ -13,61 +10,61 @@ const newsItems: Array<{
 
 export default function NewsPage() {
   return (
-    <>
+    <div className="bg-canvas min-h-screen pb-[120px]">
       {/* ─── HERO ─── */}
-      <section className="relative py-28 md:py-36 overflow-hidden bg-gradient-to-br from-ocean via-ocean/95 to-primary text-white">
-        <BentenanPattern className="absolute inset-0 opacity-[0.03]" />
-        <div className="section-container relative z-10 text-center">
-          <p className="eyebrow text-gold-light">Berita</p>
-          <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mt-4">
-            Informasi & Berita
+      <section className="relative flex flex-col items-center justify-center pt-[180px] pb-[96px] px-[20px] text-center border-b border-hairline">
+        <div className="max-w-4xl mx-auto">
+          <p className="text-caption text-ink-muted uppercase tracking-widest mb-4">Berita</p>
+          <h1 className="text-display-xl text-ink tracking-tighter mb-8 animate-fade-in">
+            Informasi & <br />
+            <span className="text-accent-blue">Berita</span>
           </h1>
-          <p className="mt-4 text-lg text-white/70 max-w-2xl mx-auto">
+          <p className="text-subhead text-ink-muted max-w-2xl mx-auto">
             Informasi dan perkembangan terbaru Nyong Noni Sulawesi Utara
           </p>
         </div>
       </section>
 
       {/* ─── NEWS LIST ─── */}
-      <Section>
-        {newsItems.length === 0 ? (
-          <div className="py-20 text-center max-w-lg mx-auto">
-            <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-gray-100">
-              <Calendar className="h-8 w-8 text-muted" />
+      <section className="py-[96px]">
+        <div className="mx-auto max-w-7xl px-[20px]">
+          {newsItems.length === 0 ? (
+            <div className="py-20 text-center max-w-lg mx-auto">
+              <div className="mx-auto mb-8 flex h-16 w-16 items-center justify-center rounded-2xl bg-surface-2 border border-hairline">
+                <Calendar className="h-8 w-8 text-ink-muted" />
+              </div>
+              <h2 className="text-display-md text-ink mb-4">Belum Ada Berita</h2>
+              <p className="text-body-lg text-ink-muted leading-relaxed">
+                Pantau terus halaman ini untuk mendapatkan informasi terbaru seputar Nyong Noni Sulawesi Utara.
+              </p>
             </div>
-            <h2 className="font-display text-xl font-semibold text-dark">Belum Ada Berita</h2>
-            <p className="mt-2 text-muted">
-              Pantau terus halaman ini untuk mendapatkan informasi terbaru seputar Nyong Noni Sulawesi Utara.
-            </p>
-          </div>
-        ) : (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {newsItems.map((item) => (
-              <Card key={item.slug} className="group cursor-pointer transition-all hover:shadow-lg border border-gray-100">
-                <CardContent className="p-5">
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-xs text-muted">{item.date}</span>
+          ) : (
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {newsItems.map((item) => (
+                <div key={item.slug} className="product-mockup-tile cursor-pointer interactive-hover active-scale flex flex-col p-8">
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="text-caption text-ink-muted">{item.date}</span>
                     {item.category && (
-                      <span className="rounded-full bg-gold/10 px-3 py-1 text-xs font-medium text-gold-dark">
+                      <span className="rounded-full bg-surface-2 border border-hairline px-3 py-1 text-xs font-semibold text-ink">
                         {item.category}
                       </span>
                     )}
                   </div>
-                  <h3 className="font-display text-lg font-semibold text-dark group-hover:text-primary transition-colors">
+                  <h3 className="text-headline text-ink mb-3 group-hover:text-accent-blue transition-colors">
                     {item.title}
                   </h3>
-                  <p className="mt-2 text-sm text-muted line-clamp-3 leading-relaxed">
+                  <p className="text-body-sm text-ink-muted line-clamp-3 leading-relaxed mb-6">
                     {item.excerpt}
                   </p>
-                  <div className="mt-4 flex items-center gap-1 text-sm font-medium text-gold-dark group-hover:gap-2 transition-all">
-                    Baca selengkapnya <ArrowRight className="h-3.5 w-3.5" />
+                  <div className="mt-auto flex items-center gap-2 text-sm font-medium text-ink group-hover:text-accent-blue transition-all border-t border-hairline pt-4">
+                    Baca selengkapnya <ArrowRight className="h-4 w-4" />
                   </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        )}
-      </Section>
-    </>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+    </div>
   )
 }

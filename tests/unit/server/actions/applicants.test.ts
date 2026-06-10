@@ -1,9 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 
-const mockLocalInsert = vi.fn((table: string, data: any) => ({ ...data, id: 'mock-id' }))
-const mockLocalQuery = vi.fn(() => [])
-const mockLocalUpdate = vi.fn()
-const mockLocalDelete = vi.fn(() => true)
+const mockLocalInsert = vi.fn((table: string, data: any) => ({ ...data, id: 'mock-id' })) as any
+const mockLocalQuery = vi.fn(() => []) as any
+const mockLocalUpdate = vi.fn() as any
+const mockLocalDelete = vi.fn(() => true) as any
 
 vi.mock('@/lib/db/local', () => ({
   isUsingLocalDb: () => true,

@@ -1,6 +1,6 @@
-import { Section } from '@/components/section'
-import { CornerAccent } from '@/components/pattern'
-import { Award, MapPin, Users, Globe, ArrowRight, Quote } from 'lucide-react'
+import { Award, MapPin, Users, Globe } from 'lucide-react'
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
 
 const milestones = [
   { year: '2014', event: 'Penyelenggaraan pertama Nyong Noni Sulawesi Utara' },
@@ -36,129 +36,119 @@ const values = [
 
 export default function AboutPage() {
   return (
-    <>
+    <div className="bg-canvas min-h-screen pb-[120px]">
       {/* ─── HERO ─── */}
-      <section className="relative py-28 md:py-36 overflow-hidden ocean-gradient text-white">
-        <div className="section-container relative z-10 text-center">
-          <p className="eyebrow text-gold-light">Tentang</p>
-          <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mt-4">
-            Nyong Noni Sulawesi Utara
+      <section className="relative flex flex-col items-center justify-center pt-[180px] pb-[96px] px-[20px] text-center border-b border-hairline">
+        <div className="max-w-4xl mx-auto">
+          <p className="text-caption text-ink-muted uppercase tracking-widest mb-4">Tentang</p>
+          <h1 className="text-display-xl text-ink tracking-tighter mb-8 animate-fade-in">
+            Nyong Noni <br />
+            <span className="text-accent-blue">Sulawesi Utara</span>
           </h1>
-          <p className="mt-4 text-lg text-white/70 max-w-2xl mx-auto">
+          <p className="text-subhead text-ink-muted max-w-2xl mx-auto">
             Ajang bergengsi pemilihan duta wisata dan budaya yang telah melahirkan generasi muda terbaik Sulawesi Utara.
           </p>
         </div>
-        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent" />
       </section>
 
       {/* ─── ABOUT TEXT ─── */}
-      <Section>
-        <div className="mx-auto max-w-3xl">
-          <div className="prose prose-lg max-w-none">
-            <p className="lead">
-              Nyong Noni Sulawesi Utara adalah ajang bergengsi pemilihan duta wisata dan budaya yang diselenggarakan setiap tahun di Sulawesi Utara. Program ini bertujuan untuk menemukan generasi muda yang berprestasi, berwawasan luas, dan siap menjadi duta pariwisata serta budaya daerah.
-            </p>
-          </div>
+      <section className="py-[96px]">
+        <div className="mx-auto max-w-3xl px-[20px]">
+          <p className="text-body-lg text-ink-muted leading-relaxed">
+            Nyong Noni Sulawesi Utara adalah ajang bergengsi pemilihan duta wisata dan budaya yang diselenggarakan setiap tahun di Sulawesi Utara. Program ini bertujuan untuk menemukan generasi muda yang berprestasi, berwawasan luas, dan siap menjadi duta pariwisata serta budaya daerah.
+          </p>
         </div>
-      </Section>
+      </section>
 
       {/* ─── VALUES ─── */}
-      <Section variant="cream" pattern>
-        <div className="text-center mb-12">
-          <p className="eyebrow">Nilai Kami</p>
-          <h2 className="font-display text-3xl md:text-4xl font-bold text-ocean mt-3">
-            Pilar Utama
-          </h2>
-        </div>
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {values.map((v) => {
-            const Icon = v.icon
-            return (
-              <div key={v.title} className="rounded-2xl bg-white border border-gray-100 p-8 shadow-sm relative group hover:shadow-md transition-shadow">
-                <CornerAccent className="absolute top-4 right-4 text-gray-200" />
-                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-gold/10 text-gold">
-                  <Icon className="h-6 w-6" />
+      <section className="py-[96px] bg-surface-1 border-t border-hairline">
+        <div className="mx-auto max-w-7xl px-[20px]">
+          <div className="text-center mb-16">
+            <h2 className="text-display-lg text-ink">Pilar Utama</h2>
+          </div>
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {values.map((v) => {
+              const Icon = v.icon
+              return (
+                <div key={v.title} className="product-mockup-tile flex flex-col p-8 interactive-hover min-h-[250px]">
+                  <Icon className="h-8 w-8 text-ink mb-6" />
+                  <h3 className="text-headline text-ink mb-3">{v.title}</h3>
+                  <p className="text-body-sm text-ink-muted leading-relaxed">{v.desc}</p>
                 </div>
-                <h3 className="font-display text-lg font-semibold text-dark mb-2">{v.title}</h3>
-                <p className="text-sm text-muted leading-relaxed">{v.desc}</p>
-              </div>
-            )
-          })}
+              )
+            })}
+          </div>
         </div>
-      </Section>
+      </section>
 
       {/* ─── VISI & MISI ─── */}
-      <Section>
-        <div className="grid gap-10 md:grid-cols-2">
-          <div className="rounded-2xl bg-gradient-to-br from-primary/5 to-primary/0 border border-primary/10 p-8 md:p-10">
-            <h2 className="font-display text-2xl font-bold text-primary">Visi</h2>
-            <p className="mt-4 text-muted leading-relaxed">
-              Menjadi ajang pemilihan duta wisata dan budaya terdepan yang mampu melahirkan generasi muda berkualitas, berkarakter, dan siap mempromosikan potensi Sulawesi Utara di kancah nasional dan internasional.
-            </p>
-          </div>
-          <div className="rounded-2xl bg-gradient-to-br from-gold/5 to-gold/0 border border-gold/10 p-8 md:p-10">
-            <h2 className="font-display text-2xl font-bold text-gold-dark">Misi</h2>
-            <ul className="mt-4 space-y-3 text-muted">
-              {[
-                'Menjaring generasi muda berbakat dari seluruh Sulawesi Utara',
-                'Membentuk duta wisata yang berpengetahuan luas tentang budaya dan pariwisata daerah',
-                'Mempromosikan keindahan alam, budaya, dan kuliner Sulawesi Utara',
-                'Menciptakan generasi muda yang peduli terhadap pariwisata',
-              ].map((item, i) => (
-                <li key={i} className="flex items-start gap-2">
-                  <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-gold shrink-0" />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
+      <section className="py-[96px]">
+        <div className="mx-auto max-w-7xl px-[20px]">
+          <div className="grid gap-6 md:grid-cols-2">
+            <div className="gradient-spotlight-card p-10 h-full flex flex-col justify-center">
+              <h2 className="text-display-md text-ink mb-4">Visi</h2>
+              <p className="text-body-lg opacity-80 leading-relaxed">
+                Menjadi ajang pemilihan duta wisata dan budaya terdepan yang mampu melahirkan generasi muda berkualitas, berkarakter, dan siap mempromosikan potensi Sulawesi Utara di kancah nasional dan internasional.
+              </p>
+            </div>
+            <div className="gradient-spotlight-card-violet p-10 h-full flex flex-col justify-center">
+              <h2 className="text-display-md text-ink mb-6">Misi</h2>
+              <ul className="space-y-4">
+                {[
+                  'Menjaring generasi muda berbakat dari seluruh Sulawesi Utara',
+                  'Membentuk duta wisata yang berpengetahuan luas tentang budaya dan pariwisata daerah',
+                  'Mempromosikan keindahan alam, budaya, dan kuliner Sulawesi Utara',
+                  'Menciptakan generasi muda yang peduli terhadap pariwisata',
+                ].map((item, i) => (
+                  <li key={i} className="flex items-start gap-4">
+                    <span className="w-1.5 h-1.5 rounded-full bg-ink mt-2.5 opacity-50 shrink-0" />
+                    <span className="text-body opacity-90">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
-      </Section>
+      </section>
 
       {/* ─── TIMELINE ─── */}
-      <Section variant="cream" pattern>
-        <div className="text-center mb-12">
-          <p className="eyebrow">Perjalanan</p>
-          <h2 className="font-display text-3xl md:text-4xl font-bold text-ocean mt-3">
-            Sejarah
-          </h2>
-          <p className="mt-2 text-muted">Perjalanan Nyong Noni Sulawesi Utara dari masa ke masa</p>
-        </div>
-        <div className="relative mx-auto max-w-2xl">
-          <div className="absolute left-6 top-0 bottom-0 w-px bg-gradient-to-b from-gold/40 via-gold/20 to-transparent" />
-          <div className="space-y-10">
-            {milestones.map((m) => (
-              <div key={m.year} className="relative pl-16">
-                <div className="absolute left-4 top-1 flex h-5 w-5 items-center justify-center rounded-full bg-gold shadow-sm">
-                  <div className="h-2 w-2 rounded-full bg-white" />
+      <section className="py-[96px] bg-surface-2 border-t border-hairline">
+        <div className="mx-auto max-w-3xl px-[20px]">
+          <div className="text-center mb-16">
+            <h2 className="text-display-lg text-ink">Perjalanan Sejarah</h2>
+          </div>
+          <div className="relative pl-8 border-l border-hairline ml-4 md:ml-0">
+            <div className="space-y-12">
+              {milestones.map((m) => (
+                <div key={m.year} className="relative">
+                  <div className="absolute -left-[41px] top-1.5 w-4 h-4 rounded-full bg-ink outline outline-4 outline-surface-2" />
+                  <span className="text-headline text-ink block mb-2">{m.year}</span>
+                  <p className="text-body-sm text-ink-muted">{m.event}</p>
                 </div>
-                <span className="font-display text-sm font-bold text-gold-dark">{m.year}</span>
-                <p className="mt-1 text-muted leading-relaxed">{m.event}</p>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
-      </Section>
+      </section>
 
       {/* ─── CTA ─── */}
-      <Section className="text-center bg-gradient-to-b from-cream to-background">
-        <div className="mx-auto max-w-2xl">
-          <h2 className="font-display text-3xl font-bold text-ocean">
+      <section className="py-[96px] text-center">
+        <div className="mx-auto max-w-2xl px-[20px]">
+          <h2 className="text-display-lg text-ink mb-6">
             Bergabung Menjadi Bagian dari Sejarah
           </h2>
-          <p className="mt-4 text-muted">
+          <p className="text-body-lg text-ink-muted mb-10">
             Daftarkan dirimu sekarang dan jadilah bagian dari perjalanan Nyong Noni Sulawesi Utara.
           </p>
-          <div className="mt-8 flex justify-center">
-            <a
-              href="/register"
-              className="inline-flex items-center gap-2 rounded-xl bg-gold text-white px-8 py-3.5 font-semibold hover:bg-gold-dark transition-colors shadow-lg shadow-gold/20"
-            >
-              Daftar Sekarang <ArrowRight className="h-4 w-4" />
-            </a>
+          <div className="flex justify-center">
+            <Link href="/register">
+              <Button variant="primary" className="h-14 px-8 text-lg">
+                Daftar Sekarang
+              </Button>
+            </Link>
           </div>
         </div>
-      </Section>
-    </>
+      </section>
+    </div>
   )
 }

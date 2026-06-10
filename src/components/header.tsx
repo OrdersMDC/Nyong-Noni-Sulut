@@ -21,14 +21,6 @@ const NAV_ITEMS = [
 export function Header() {
   const pathname = usePathname()
   const [isOpen, setIsOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20)
-    window.addEventListener('scroll', onScroll, { passive: true })
-    onScroll()
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
 
   useEffect(() => {
     setIsOpen(false)
@@ -41,29 +33,16 @@ export function Header() {
 
   return (
     <>
-      <a href="#main-content" className="skip-link">
+      <a href="#main-content" className="absolute -top-10 left-0 z-[100] bg-surface-1 px-4 py-2 text-button text-ink transition-all focus:top-0">
         Langsung ke konten
       </a>
 
-      <header
-        className={cn(
-          'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
-          scrolled
-            ? 'bg-white/90 backdrop-blur-xl border-b border-gray-200/60 shadow-sm'
-            : 'bg-white/0 border-b border-transparent',
-        )}
-      >
-        <div className="mx-auto flex h-[4.5rem] max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gold text-white text-xs font-bold font-display tracking-wider shadow-sm transition-transform group-hover:scale-105">
-              NN
-            </div>
+      <header className="fixed top-0 left-0 right-0 z-50 bg-canvas border-b border-hairline transition-all duration-300">
+        <div className="mx-auto flex h-[56px] max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+          <Link href="/" className="flex items-center gap-3 group active-scale">
             <div className="flex flex-col">
-              <span className="font-display text-lg font-bold text-ocean leading-tight">
-                Nyong Noni
-              </span>
-              <span className="text-[10px] font-medium tracking-[0.15em] uppercase text-gold-dark leading-tight -mt-0.5">
-                Sulawesi Utara
+              <span className="text-body-sm font-bold text-ink leading-tight">
+                Nyong Noni Sulut
               </span>
             </div>
           </Link>
@@ -76,10 +55,10 @@ export function Header() {
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    'relative px-3 py-2 text-sm font-medium rounded-lg transition-colors',
+                    'relative px-3 py-2 text-body-sm rounded-xs interactive-hover',
                     isActive
-                      ? 'text-primary bg-primary/5'
-                      : 'text-gray-600 hover:text-primary hover:bg-gray-50',
+                      ? 'text-ink bg-surface-1'
+                      : 'text-ink-muted hover:text-ink hover:bg-surface-1',
                   )}
                   aria-current={isActive ? 'page' : undefined}
                 >
@@ -87,17 +66,18 @@ export function Header() {
                 </Link>
               )
             })}
-            <div className="ml-3 pl-3 border-l border-gray-200">
+            <div className="ml-3 pl-3 border-l border-hairline flex gap-2">
+              <Link href="/login">
+                <Button variant="secondary">Masuk</Button>
+              </Link>
               <Link href="/register">
-                <Button variant="gold" className="shadow-sm">
-                  Daftar Sekarang
-                </Button>
+                <Button variant="primary">Daftar Sekarang</Button>
               </Link>
             </div>
           </nav>
 
           <button
-            className="md:hidden relative z-50 flex h-10 w-10 items-center justify-center rounded-lg hover:bg-gray-100 transition-colors"
+            className="md:hidden relative z-50 flex h-10 w-10 items-center justify-center rounded-full bg-surface-1 text-ink interactive-hover"
             onClick={() => setIsOpen(!isOpen)}
             aria-label={isOpen ? 'Tutup menu' : 'Buka menu'}
             aria-expanded={isOpen}
@@ -109,7 +89,7 @@ export function Header() {
         {/* Mobile nav */}
         <div
           className={cn(
-            'fixed inset-0 z-40 bg-white md:hidden transition-transform duration-300 pt-[4.5rem]',
+            'fixed inset-0 z-40 bg-canvas md:hidden transition-transform duration-[400ms] ease-[var(--ease-drawer)] pt-[56px]',
             isOpen ? 'translate-x-0' : 'translate-x-full',
           )}
           aria-hidden={!isOpen}
@@ -122,10 +102,10 @@ export function Header() {
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    'rounded-xl px-4 py-3.5 text-base font-medium transition-colors',
+                    'rounded-md px-4 py-3.5 text-body-sm interactive-hover',
                     isActive
-                      ? 'text-primary bg-primary/5 border border-primary/10'
-                      : 'text-gray-700 hover:bg-gray-50',
+                      ? 'text-ink bg-surface-1'
+                      : 'text-ink-muted hover:text-ink hover:bg-surface-1',
                   )}
                   aria-current={isActive ? 'page' : undefined}
                 >
@@ -133,9 +113,14 @@ export function Header() {
                 </Link>
               )
             })}
-            <div className="pt-4 mt-4 border-t border-gray-100">
+            <div className="pt-4 mt-4 border-t border-hairline flex flex-col gap-2">
+              <Link href="/login" onClick={() => setIsOpen(false)}>
+                <Button variant="secondary" className="w-full">
+                  Masuk
+                </Button>
+              </Link>
               <Link href="/register" onClick={() => setIsOpen(false)}>
-                <Button variant="gold" className="w-full text-base py-3.5">
+                <Button variant="primary" className="w-full">
                   Daftar Sekarang
                 </Button>
               </Link>
@@ -143,15 +128,6 @@ export function Header() {
           </nav>
         </div>
       </header>
-
-      {/* Overlay for mobile */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 z-30 bg-black/20 md:hidden"
-          onClick={() => setIsOpen(false)}
-          aria-hidden="true"
-        />
-      )}
     </>
   )
 }

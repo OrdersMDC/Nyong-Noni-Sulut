@@ -1,53 +1,67 @@
 import Link from 'next/link'
-import { BentenanPattern } from './pattern'
-import { Instagram, Mail, MapPin, ChevronRight } from 'lucide-react'
+import { Instagram, Mail, MapPin } from 'lucide-react'
 
 export function Footer() {
   return (
-    <footer className="relative bg-ocean text-white overflow-hidden">
-      <div className="pointer-events-none absolute inset-0 opacity-[0.03]">
-        <BentenanPattern className="h-full w-full" />
-      </div>
+    <footer className="bg-canvas border-t border-hairline pt-[96px] pb-[48px] px-[32px]">
+      <div className="mx-auto max-w-7xl">
+        {/* Top Section: Large Brand Display Callout */}
+        <div className="border-b border-hairline-soft pb-[48px] mb-[64px] flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
+          <div>
+            <span className="text-caption text-accent-blue font-semibold uppercase tracking-widest block mb-3">
+              IKATAN NYONG NONI SULUT
+            </span>
+            <h2 className="text-display-md md:text-display-lg font-medium text-ink leading-tight tracking-tighter uppercase max-w-3xl">
+              Membentuk Pemimpin Muda Inspiratif untuk Sulawesi Utara
+            </h2>
+          </div>
+          <div className="shrink-0">
+            <Link
+              href="/register"
+              className="inline-flex items-center justify-center bg-primary text-on-primary font-medium rounded-pill px-6 py-3.5 text-button transition-all duration-150 hover:opacity-90 active:scale-[0.97] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-blue/50"
+            >
+              Daftar Sekarang
+            </Link>
+          </div>
+        </div>
 
-      <div className="section-container relative z-10 py-16 md:py-20">
-        <div className="grid gap-10 md:grid-cols-4">
-          {/* Brand */}
-          <div className="md:col-span-1">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gold text-ocean text-sm font-bold font-display">
-                NN
-              </div>
-              <div>
-                <p className="font-display text-lg font-bold text-gold leading-tight">Nyong Noni</p>
-                <p className="text-[10px] font-medium tracking-[0.15em] uppercase text-gold-light/70 leading-tight -mt-0.5">Sulawesi Utara</p>
-              </div>
+        {/* Dense Columns Section */}
+        <div className="flex flex-col md:flex-row flex-wrap gap-8 lg:gap-12 justify-between text-caption text-ink-muted">
+          {/* Brand Column */}
+          <div className="w-full md:w-[35%] lg:w-[40%] min-w-[280px] space-y-6">
+            <div>
+              <span className="text-body font-bold text-ink tracking-tight block mb-2">
+                Nyong Noni Sulut
+              </span>
+              <p className="text-caption text-ink-muted leading-relaxed">
+                Platform resmi pembinaan, pemilihan, dan kolaborasi duta wisata, budaya, dan investasi Provinsi Sulawesi Utara.
+              </p>
             </div>
-            <p className="text-sm text-gray-400 leading-relaxed max-w-xs">
-              Ajang pemilihan duta wisata dan budaya Sulawesi Utara yang menampilkan generasi muda terbaik.
-            </p>
-            <div className="flex items-center gap-3 mt-5">
+            
+            {/* Social & Contact Buttons */}
+            <div className="flex items-center gap-3">
               <a
                 href="https://instagram.com/nyongnonisulut"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 hover:bg-gold/20 transition-colors"
+                className="flex items-center justify-center rounded-full bg-surface-1 text-ink md:size-[40px] size-[44px] hover:bg-surface-2 transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.97] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-blue/50"
                 aria-label="Instagram Nyong Noni Sulut"
               >
-                <Instagram className="h-4 w-4" />
+                <Instagram className="h-4.5 w-4.5" />
               </a>
               <a
                 href="mailto:info@nyongnonisulut.id"
-                className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 hover:bg-gold/20 transition-colors"
+                className="flex items-center justify-center rounded-full bg-surface-1 text-ink md:size-[40px] size-[44px] hover:bg-surface-2 transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.97] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-blue/50"
                 aria-label="Email Nyong Noni Sulut"
               >
-                <Mail className="h-4 w-4" />
+                <Mail className="h-4.5 w-4.5" />
               </a>
             </div>
           </div>
 
-          {/* Quick Links */}
-          <div>
-            <h4 className="font-display text-sm font-semibold text-gold-light mb-4 uppercase tracking-wider">Jelajahi</h4>
+          {/* Column 1: Jelajahi */}
+          <div className="w-full md:w-[15%] lg:w-[12%] min-w-[140px] space-y-4">
+            <h4 className="font-semibold text-ink uppercase tracking-wider text-micro">Jelajahi</h4>
             <ul className="space-y-3">
               {[
                 { label: 'Tentang Kami', href: '/about' },
@@ -56,8 +70,10 @@ export function Footer() {
                 { label: 'Prestasi Alumni', href: '/alumni-achievements' },
               ].map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href} className="group flex items-center gap-1.5 text-sm text-gray-400 hover:text-gold transition-colors">
-                    <ChevronRight className="h-3 w-3 text-gold/50 group-hover:text-gold transition-colors" />
+                  <Link 
+                    href={link.href} 
+                    className="hover:text-ink hover:translate-x-1 inline-block transition-all duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-blue/50"
+                  >
                     {link.label}
                   </Link>
                 </li>
@@ -65,18 +81,20 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Media */}
-          <div>
-            <h4 className="font-display text-sm font-semibold text-gold-light mb-4 uppercase tracking-wider">Media</h4>
+          {/* Column 2: Media */}
+          <div className="w-full md:w-[15%] lg:w-[12%] min-w-[140px] space-y-4">
+            <h4 className="font-semibold text-ink uppercase tracking-wider text-micro">Media</h4>
             <ul className="space-y-3">
               {[
-                { label: 'Galeri', href: '/gallery' },
-                { label: 'Berita', href: '/news' },
-                { label: 'Acara', href: '/events' },
+                { label: 'Galeri Kegiatan', href: '/gallery' },
+                { label: 'Berita & Rilis', href: '/news' },
+                { label: 'Agenda Acara', href: '/events' },
               ].map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href} className="group flex items-center gap-1.5 text-sm text-gray-400 hover:text-gold transition-colors">
-                    <ChevronRight className="h-3 w-3 text-gold/50 group-hover:text-gold transition-colors" />
+                  <Link 
+                    href={link.href} 
+                    className="hover:text-ink hover:translate-x-1 inline-block transition-all duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-blue/50"
+                  >
                     {link.label}
                   </Link>
                 </li>
@@ -84,54 +102,58 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Contact */}
-          <div>
-            <h4 className="font-display text-sm font-semibold text-gold-light mb-4 uppercase tracking-wider">Kontak</h4>
-            <ul className="space-y-3 text-sm text-gray-400">
-              <li className="flex items-start gap-2">
-                <MapPin className="h-4 w-4 mt-0.5 text-gold/50 shrink-0" />
-                <span>Manado, Sulawesi Utara</span>
+          {/* Column 3: Hubungi Kami */}
+          <div className="w-full md:w-[20%] lg:w-[18%] min-w-[200px] space-y-4">
+            <h4 className="font-semibold text-ink uppercase tracking-wider text-micro">Hubungi Kami</h4>
+            <ul className="space-y-3 font-sans">
+              <li className="flex items-start gap-2.5">
+                <MapPin className="h-4 w-4 shrink-0 text-accent-blue mt-0.5" />
+                <span className="leading-relaxed">Manado, Sulawesi Utara, Indonesia</span>
               </li>
-              <li className="flex items-center gap-2">
-                <Mail className="h-4 w-4 text-gold/50 shrink-0" />
-                <a href="mailto:info@nyongnonisulut.id" className="hover:text-gold transition-colors">info@nyongnonisulut.id</a>
-              </li>
-              <li className="flex items-center gap-2">
-                <Instagram className="h-4 w-4 text-gold/50 shrink-0" />
-                <a href="https://instagram.com/nyongnonisulut" target="_blank" rel="noopener noreferrer" className="hover:text-gold transition-colors">@nyongnonisulut</a>
+              <li className="flex items-center gap-2.5">
+                <Mail className="h-4 w-4 shrink-0 text-accent-blue" />
+                <a 
+                  href="mailto:info@nyongnonisulut.id" 
+                  className="hover:text-ink hover:translate-x-1 inline-block transition-all duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-blue/50"
+                >
+                  info@nyongnonisulut.id
+                </a>
               </li>
             </ul>
           </div>
         </div>
 
-        {/* Newsletter placeholder */}
-        <div className="mt-12 p-6 rounded-2xl bg-white/5 border border-white/10">
-          <div className="flex flex-col sm:flex-row items-center gap-4">
-            <div className="flex-1 text-center sm:text-left">
-              <p className="font-display text-base font-semibold text-gold-light">Ikuti Perkembangan Terbaru</p>
-              <p className="text-sm text-gray-400 mt-1">Dapatkan informasi acara dan pendaftaran langsung di email Anda.</p>
-            </div>
-            <div className="flex gap-2 w-full sm:w-auto">
-              <input
-                type="email"
-                placeholder="email@anda.com"
-                className="flex-1 sm:w-56 rounded-xl border border-white/20 bg-white/10 px-4 py-2.5 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-gold/50"
-                aria-label="Email untuk newsletter"
-              />
-              <button className="rounded-xl bg-gold text-ocean px-5 py-2.5 text-sm font-semibold hover:bg-gold-light transition-colors whitespace-nowrap">
-                Berlangganan
-              </button>
-            </div>
-          </div>
+        {/* Massive Decorative Wordmark */}
+        <div className="mt-[96px] select-none border-t border-hairline-soft pt-[32px] overflow-hidden flex justify-center">
+          <span className="text-[12vw] sm:text-[9vw] md:text-[8vw] lg:text-[7vw] xl:text-[90px] font-bold tracking-tighter text-ink opacity-[0.03] leading-none uppercase pointer-events-none whitespace-nowrap">
+            Nyong Noni Sulut
+          </span>
         </div>
 
-        {/* Bottom */}
-        <div className="mt-10 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-gray-500">
-          <p>&copy; {new Date().getFullYear()} Nyong Noni Sulawesi Utara. All rights reserved.</p>
-          <div className="flex items-center gap-4">
-            <Link href="/register" className="hover:text-gold transition-colors">Pendaftaran</Link>
-            <span className="text-white/20">|</span>
-            <Link href="/about" className="hover:text-gold transition-colors">Tentang</Link>
+        {/* Bottom copyright/links */}
+        <div className="mt-8 pt-6 border-t border-hairline-soft flex flex-col sm:flex-row items-center justify-between gap-4 text-micro text-ink-muted">
+          <p>&copy; {new Date().getFullYear()} Ikatan Nyong Noni Sulawesi Utara. Seluruh hak cipta dilindungi.</p>
+          <div className="flex items-center gap-6">
+            <Link 
+              href="/register" 
+              className="hover:text-ink transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-blue/50"
+            >
+              Pendaftaran
+            </Link>
+            <Link 
+              href="/about" 
+              className="hover:text-ink transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-blue/50"
+            >
+              Tentang
+            </Link>
+            <a 
+              href="https://sulutprov.go.id" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="hover:text-ink transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-blue/50"
+            >
+              Pemprov SULUT
+            </a>
           </div>
         </div>
       </div>
